@@ -1,5 +1,5 @@
 {
-  "name": "@customjs/n8n-nodes-pdf-toolkit",
+  "name": "@custom-js/n8n-nodes-pdf-toolkit",
   "version": "0.0.1",
   "description": "This is official node for interacting with APIs from customjs.space",
   "keywords": [
@@ -18,9 +18,29 @@
   },
   "license": "ISC",
   "author": "Julian Szuper",
+  "files": [
+    "dist"
+  ],
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "credentials": [
+      "dist/credentials/CustomJsApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/Html2Pdf/Html2Pdf.node.js"
+    ]
+  },
+  "devDependencies": {
+    "n8n-workflow": "^0.141.0",
+    "typescript": "~4.8.4",
+    "gulp": "^4.0.2",
+    "@types/node": "^16.11.7"
+  },
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc && gulp build:icons",
+    "dev": "tsc --watch",
+    "format": "prettier --write ."
   }
 }
