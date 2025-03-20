@@ -37,7 +37,8 @@ export class MergePdf implements INodeType {
       if (!item.binary?.data) {
         throw new Error(`No binary data found in "data" field for item ${i}`);
       }
-      return Buffer.from(item.binary.data.data, "base64").toString("binary");
+      return Buffer.from(item.binary.data.data, "base64").toString("base64");
+      //return item.binary.data.data;
     });
 
     console.log(files);
@@ -53,7 +54,7 @@ export class MergePdf implements INodeType {
       },
       body: {
         input: files,
-        code: "const { PDF_MERGE } = require('./utils'); const pdfBuffers = input.map(obj => Buffer.from(obj).toString('base64')); return PDF_MERGE(pdfBuffers)",
+        code: "const { PDF_MERGE } = require('./utils'); const pdfBuffers = input.map(base64Str => Buffer.from(base64Str, 'base64')); return PDF_MERGE(pdfBuffers)",
         returnBinary: "true",
       },
       encoding: null,
