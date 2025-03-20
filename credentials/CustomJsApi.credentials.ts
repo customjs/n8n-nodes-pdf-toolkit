@@ -9,6 +9,7 @@ export class CustomJsApi implements ICredentialType {
       name: "apiKey",
       type: "string" as NodePropertyTypes,
       default: "",
+      description: "You can get API Key for CustomJS from https://www.customjs.space/"
     },
   ];
 }
