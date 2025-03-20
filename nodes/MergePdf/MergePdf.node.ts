@@ -26,7 +26,7 @@ export class MergePdf implements INodeType {
         required: true,
       },
     ],
-    properties: [], // Remove the dataFieldName property
+    properties: [],
   };
 
   async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
@@ -37,10 +37,8 @@ export class MergePdf implements INodeType {
       if (!item.binary?.data) {
         throw new Error(`No binary data found in "data" field for item ${i}`);
       }
-      return Buffer.from(item.binary.data.data, "base64").toString("binary");
+      return Buffer.from(item.binary.data.data, "base64");
     });
-
-    console.log(files);
 
     const credentials = await this.getCredentials("customJsApi");
 
