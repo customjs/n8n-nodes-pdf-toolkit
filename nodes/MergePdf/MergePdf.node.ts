@@ -51,7 +51,7 @@ export class MergePdf implements INodeType {
       },
       body: {
         input: files,
-        code: "const { PDF_MERGE } = require('./utils'); const pdfBuffers = input.map(obj => Buffer.from(obj).toString('base64')); return PDF_MERGE(pdfBuffers)",
+        code: "const { PDF_MERGE } = require('./utils'); const pdfBuffers = input.map(base64Str => Buffer.from(base64Str, 'base64')); return PDF_MERGE(pdfBuffers)",
         returnBinary: "true",
       },
       encoding: null,
