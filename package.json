@@ -27,7 +27,8 @@
       "dist/credentials/CustomJsApi.credentials.js"
     ],
     "nodes": [
-      "dist/nodes/Html2Pdf/Html2Pdf.node.js"
+      "dist/nodes/Html2Pdf/Html2Pdf.node.js",
+      "dist/nodes/WebsiteScreenshot/WebsiteScreenshot.node.js"
     ]
   },
   "devDependencies": {
