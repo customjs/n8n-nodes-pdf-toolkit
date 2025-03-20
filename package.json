@@ -1,0 +1,26 @@
+{
+  "name": "@customjs/n8n-nodes-pdf-toolkit",
+  "version": "0.0.1",
+  "description": "This is official node for interacting with APIs from customjs.space",
+  "keywords": [
+    "customjs",
+    "pdf",
+    "n8n-community-node",
+    "pdf-toolkit"
+  ],
+  "homepage": "https://github.com/customjs/n8n-nodes-pdf-toolkit#readme",
+  "bugs": {
+    "url": "https://github.com/customjs/n8n-nodes-pdf-toolkit/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/customjs/n8n-nodes-pdf-toolkit.git"
+  },
+  "license": "ISC",
+  "author": "Julian Szuper",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
