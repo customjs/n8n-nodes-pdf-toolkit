@@ -7,10 +7,10 @@ import {
   NodePropertyTypes,
 } from "n8n-workflow";
 
-export class MergePdf implements INodeType {
+export class MergePdfs implements INodeType {
   description: INodeTypeDescription = {
-    displayName: "Merge PDF",
-    name: "mergePdf",
+    displayName: "Merge PDFs",
+    name: "mergePdfs",
     icon: "file:customJs.svg",
     group: ["transform"],
     version: 1,
