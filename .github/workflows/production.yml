@@ -46,8 +46,6 @@ jobs:
       - name: NPM Publish
         run: |
           npm version minor --no-git-tag-version
-          cp package.json  dist/package.json
-          cp README.md  dist/README.md
           echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
           npm publish --access public
         env:
