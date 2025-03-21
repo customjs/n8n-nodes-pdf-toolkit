@@ -38,14 +38,19 @@ jobs:
         run: |
           npm run build
 
+      - name: Set git config
+        run: |
+          git config --global user.email "info@henriklippke.de"
+          git config --global user.name "Henrik Lippke"
+          git config user.email "info@henriklippke.de"
+          git config user.name "Henrik Lippke"
+
       - name: NPM Publish
         run: |
           npm version minor
           cp package.json  dist/package.json
           cp README.md  dist/README.md
           cd dist
-          git config --global user.email "info@henriklippke.de"
-          git config --global user.name "Henrik Lippke"
           npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
