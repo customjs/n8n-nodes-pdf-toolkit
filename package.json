@@ -15,7 +15,6 @@
   "license": "ISC",
   "author": "Julian Szuper",
   "files": [
-    "dist"
   ],
   "n8n": {
     "n8nNodesApiVersion": 1,
