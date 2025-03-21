@@ -1,0 +1,60 @@
+name: Deploy Production
+on:
+  release:
+    types: [published]
+      
+jobs:
+  deploy-production:
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+
+    if: "!contains(github.event.head_commit.message, 'ci skip')"
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '20.x'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@custom-js'
+      - name: Install NPM dependencies
+        run: |
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_PAT }}" > .npmrc
+          echo "@custom-js:registry=https://npm.pkg.github.com/" >> .npmrc
+          npm install
+
+      - name: Run build
+        run: npm run build
+
+      - uses: ad-m/github-push-action@master
+        with:
+          tags: false
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: main
+
+      - name: Build NPM Package
+        run: |
+          npm run build
+
+      - name: NPM Publish
+        run: |
+          npm version minor
+          cp package.json  dist/package.json
+          cp README.md  dist/README.md
+          cd dist
+          npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+      - name: Commit package
+        run: |
+          git add sdk
+          git commit -m "NPM Publish from CI/CD [ci skip]" sdk || true
+
+      - uses: ad-m/github-push-action@master
+        with:
+          tags: false
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: main
