@@ -8,13 +8,9 @@
     "n8n-community-node",
     "pdf-toolkit"
   ],
-  "homepage": "https://github.com/customjs/n8n-nodes-pdf-toolkit#readme",
+  "homepage": "https://www.customjs.space/",
   "bugs": {
     "url": "https://github.com/customjs/n8n-nodes-pdf-toolkit/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/customjs/n8n-nodes-pdf-toolkit.git"
   },
   "license": "ISC",
   "author": "Julian Szuper",
