@@ -21,8 +21,6 @@ jobs:
           scope: '@custom-js'
       - name: Install NPM dependencies
         run: |
-          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_PAT }}" > .npmrc
-          echo "@custom-js:registry=https://npm.pkg.github.com/" >> .npmrc
           npm install
 
       - name: Run build
@@ -51,6 +49,7 @@ jobs:
           cp package.json  dist/package.json
           cp README.md  dist/README.md
           cd dist
+          npm config set //registry.npmjs.org/:_authToken=${{ secrets.GH_PAT }}
           npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
