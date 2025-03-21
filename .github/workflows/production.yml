@@ -44,6 +44,8 @@ jobs:
           cp package.json  dist/package.json
           cp README.md  dist/README.md
           cd dist
+          git config --global user.email "info@henriklippke.de"
+          git config --global user.name "Henrik Lippke"
           npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
