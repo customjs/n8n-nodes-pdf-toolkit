@@ -7,7 +7,7 @@ import {
 
 export class WebsiteScreenshot implements INodeType {
   description: INodeTypeDescription = {
-    displayName: "Website Screenshot",
+    displayName: "Website Screenshot (customJs)",
     name: "websiteScreenshot",
     icon: "file:customJs.svg",
     group: ["transform"],
