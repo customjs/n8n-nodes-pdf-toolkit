@@ -26,7 +26,8 @@
       "dist/nodes/Html2Pdf/Html2Pdf.node.js",
       "dist/nodes/WebsiteScreenshot/WebsiteScreenshot.node.js",
       "dist/nodes/MergePdfs/MergePdfs.node.js",
-      "dist/nodes/PdfToText/PdfToText.node.js"
+      "dist/nodes/PdfToText/PdfToText.node.js",
+      "dist/nodes/PdfToPng/PdfToPng.node.js"
     ]
   },
   "devDependencies": {
