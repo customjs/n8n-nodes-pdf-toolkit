@@ -7,7 +7,7 @@ import {
 
 export class PdfToPng implements INodeType {
   description: INodeTypeDescription = {
-    displayName: "PDF To PNG (customJs)",
+    displayName: "PDF To PNG (CustomJs)",
     name: "PdfToPng",
     icon: "file:customJs.svg",
     group: ["transform"],
@@ -47,7 +47,7 @@ export class PdfToPng implements INodeType {
         type: "string",
         default: "data",
         description:
-          "The field name for binary PDF file or url that indicates PDF file.",
+          "The field name for binary PDF file or url that indicates PDF file. Please make sure the size of PDf file doesn't exceed 6mb. If it's bigger, pass URL rather than binary file.",
         required: true,
       },
     ],
