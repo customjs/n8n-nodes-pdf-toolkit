@@ -64,14 +64,15 @@ export class Html2Pdf implements INodeType {
       };
 
       const response = await this.helpers.request(options);
+      const binaryData = await this.helpers.prepareBinaryData(
+        response,
+        "output.pdf"
+      );
 
       returnData.push({
         json: items[i].json,
         binary: {
-          data: {
-            data: response,
-            mimeType: "application/pdf",
-          },
+          data: binaryData,
         },
       });
     }

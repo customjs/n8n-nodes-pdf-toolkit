@@ -61,14 +61,15 @@ export class WebsiteScreenshot implements INodeType {
       };
 
       const response = await this.helpers.request(options);
+      const binaryData = await this.helpers.prepareBinaryData(
+        response,
+        "output.png"
+      );
 
       returnData.push({
         json: items[i].json,
         binary: {
-          data: {
-            data: response,
-            mimeType: "image/png",
-          },
+          data: binaryData,
         },
       });
     }
