@@ -114,19 +114,17 @@ export class ExtractPages implements INodeType {
       };
 
       const response = await this.helpers.request(options);
+      const binaryData = await this.helpers.prepareBinaryData(
+        response,
+        "output.png"
+      );
 
       console.log(response);
 
       returnData.push({
         json: items[i].json,
         binary: {
-          data: {
-            data: response,
-            mimeType: "image/png",
-            fileName: `output.png`,
-            fileExtension: "png",
-            fileType: "image",
-          },
+          data: binaryData,
         },
       });
     }

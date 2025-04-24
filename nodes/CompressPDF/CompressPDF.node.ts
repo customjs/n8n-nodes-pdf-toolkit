@@ -103,16 +103,15 @@ export class CompressPDF implements INodeType {
       };
 
       const response = await this.helpers.request(options);
+      const binaryData = await this.helpers.prepareBinaryData(
+        response,
+        "output.pdf"
+      );
 
       returnData.push({
         json: items[i].json,
         binary: {
-          data: {
-            data: response,
-            mimeType: "application/pdf",
-            fileName: `output.pdf`,
-            fileExtension: "pdf",
-          },
+          data: binaryData,
         },
       });
     }

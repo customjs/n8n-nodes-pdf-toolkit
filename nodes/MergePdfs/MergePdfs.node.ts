@@ -59,14 +59,15 @@ export class MergePdfs implements INodeType {
     };
 
     const response = await this.helpers.request(options);
+    const binaryData = await this.helpers.prepareBinaryData(
+      response,
+      "output.pdf"
+    );
 
     returnData.push({
       json: {} as IDataObject,
       binary: {
-        data: {
-          data: response,
-          mimeType: "application/pdf",
-        },
+        data: binaryData,
       },
     });
 
