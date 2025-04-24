@@ -28,7 +28,8 @@
       "dist/nodes/MergePdfs/MergePdfs.node.js",
       "dist/nodes/PdfToText/PdfToText.node.js",
       "dist/nodes/PdfToPng/PdfToPng.node.js",
-      "dist/nodes/ExtractPages/ExtractPages.node.js"
+      "dist/nodes/ExtractPages/ExtractPages.node.js",
+      "dist/nodes/CompressPDF/CompressPDF.node.js"
     ]
   },
   "devDependencies": {
