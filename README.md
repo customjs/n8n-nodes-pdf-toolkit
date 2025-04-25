@@ -4,7 +4,7 @@
 
 This is an n8n community node. It lets interact with official API of [customJS API](https://www.customjs.space/)
 
-This package contains nodes to help you generate PDF from HTML, merge multiple PDF files, and take a screenshot of specific website using URL.
+This package contains nodes to help you generate PDF from HTML, merge multiple PDF files, take a screenshot of specific website using URL, convert PDF to PNG, convert PDF to Text and extract pages from PDF.
 
 [n8n](https://n8n.io/) is a [fair-code licensed](https://docs.n8n.io/reference/license/) workflow automation platform.
 
@@ -36,7 +36,8 @@ Add your Api Key and store securely
 
 - Add the Merge PDFs node to your workflow
 - Configure your CustomJS API credentials
-- Only input binary data to this node.
+- Input PDF files as an array with the same field name to merge.
+- If total size of files exceeds 6MB, pass it as an array of URL seperated by comma.
 - Execute the workflow to get merged PDF file.
 
 ### "Website Screenshot" node
@@ -45,3 +46,35 @@ Add your Api Key and store securely
 - Configure your CustomJS API credentials
 - Input your URL of website to take screenshot
 - Execute the workflow to take a screenshot of that website
+
+### "Compress PDF" node
+
+- Add the Compress PDF node to your workflow
+- Configure your CustomJS API credentials
+- Input Binary PDF file for compression to compress
+- If size of the binary file exceeds 6MB, pass it as URL.
+- Execute the workflow to get a compression of PDF file.
+
+### "PDF To PNG" node
+
+- Add the PDF To PNG node to your workflow
+- Configure your CustomJS API credentials
+- Input Binary PDF file for conversion
+- If size of the binary file exceeds 6MB, pass it as URL.
+- Execute the workflow to get converted PNG file.
+
+### "PDF To Text" node
+
+- Add the PDF To Text node to your workflow
+- Configure your CustomJS API credentials
+- Input Binary PDF file for conversion
+- If size of the binary file exceeds 6MB, pass it as URL.
+- Execute the workflow to get converted Text file.
+
+### "Extract Pages From PDF" node
+
+- Add the Extract Pages From PDF node to your workflow
+- Configure your CustomJS API credentials
+- Input Binary PDF file for conversion
+- If size of the binary file exceeds 6MB, pass it as URL.
+- Execute the workflow to get converted Pages from PDF file.
