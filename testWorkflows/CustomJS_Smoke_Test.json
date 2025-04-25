@@ -1,0 +1,412 @@
+{
+  "name": "CustomJS Smoke Test",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "@custom-js/n8n-nodes-pdf-toolkit.PdfToText",
+      "typeVersion": 1,
+      "position": [
+        0,
+        360
+      ],
+      "id": "5016ff34-417a-4495-92f9-cc37b79ec5a4",
+      "name": "Convert PDF into Text",
+      "credentials": {
+        "customJsApi": {
+          "id": "BFGbk0a71fKWY967",
+          "name": "CustomJS account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "htmlInput": "<h1>Hello World</h1>"
+      },
+      "type": "@custom-js/n8n-nodes-pdf-toolkit.html2Pdf",
+      "typeVersion": 1,
+      "position": [
+        -340,
+        500
+      ],
+      "id": "7a8e460a-7bca-440d-a6ca-621d65d5e319",
+      "name": "HTML to PDF",
+      "credentials": {
+        "customJsApi": {
+          "id": "BFGbk0a71fKWY967",
+          "name": "CustomJS account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1180,
+        840
+      ],
+      "id": "1e495a63-1e59-45c6-82ba-283c180da4db",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {},
+      "type": "@custom-js/n8n-nodes-pdf-toolkit.PdfToPng",
+      "typeVersion": 1,
+      "position": [
+        0,
+        540
+      ],
+      "id": "c501d285-3595-4392-a462-17d63077aac2",
+      "name": "Convert PDF into PNG",
+      "credentials": {
+        "customJsApi": {
+          "id": "BFGbk0a71fKWY967",
+          "name": "CustomJS account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@custom-js/n8n-nodes-pdf-toolkit.ExtractPages",
+      "typeVersion": 1,
+      "position": [
+        0,
+        700
+      ],
+      "id": "2860083d-adb8-4d09-98f6-739fb8dfcfae",
+      "name": "Extract Pages From PDF",
+      "credentials": {
+        "customJsApi": {
+          "id": "BFGbk0a71fKWY967",
+          "name": "CustomJS account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@custom-js/n8n-nodes-pdf-toolkit.CompressPDF",
+      "typeVersion": 1,
+      "position": [
+        0,
+        200
+      ],
+      "id": "a4e509aa-6ed7-40ea-b7e0-a3c5fa306e9e",
+      "name": "Compress PDF file",
+      "credentials": {
+        "customJsApi": {
+          "id": "BFGbk0a71fKWY967",
+          "name": "CustomJS account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "url",
+        "field_name": "={{ $json.path }}"
+      },
+      "type": "@custom-js/n8n-nodes-pdf-toolkit.PdfToText",
+      "typeVersion": 1,
+      "position": [
+        0,
+        1300
+      ],
+      "id": "fdf55298-d1d8-4080-a50b-871cff055dfd",
+      "name": "Convert PDF into Text1",
+      "credentials": {
+        "customJsApi": {
+          "id": "BFGbk0a71fKWY967",
+          "name": "CustomJS account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "url",
+        "field_name": "={{ $json.path }}"
+      },
+      "type": "@custom-js/n8n-nodes-pdf-toolkit.PdfToPng",
+      "typeVersion": 1,
+      "position": [
+        0,
+        1480
+      ],
+      "id": "c2e24235-7c10-42b5-9554-edefed812537",
+      "name": "Convert PDF into PNG1",
+      "credentials": {
+        "customJsApi": {
+          "id": "BFGbk0a71fKWY967",
+          "name": "CustomJS account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "url",
+        "field_name": "={{ $json.path }}"
+      },
+      "type": "@custom-js/n8n-nodes-pdf-toolkit.ExtractPages",
+      "typeVersion": 1,
+      "position": [
+        0,
+        1640
+      ],
+      "id": "2a0618c0-568d-4ba5-b86d-b3a4f67171b6",
+      "name": "Extract Pages From PDF1",
+      "credentials": {
+        "customJsApi": {
+          "id": "BFGbk0a71fKWY967",
+          "name": "CustomJS account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "url",
+        "field_name": "={{ $json.path }}"
+      },
+      "type": "@custom-js/n8n-nodes-pdf-toolkit.CompressPDF",
+      "typeVersion": 1,
+      "position": [
+        0,
+        1140
+      ],
+      "id": "7e01f8eb-3c25-42cc-8b35-1e53bc65fb56",
+      "name": "Compress PDF file1",
+      "credentials": {
+        "customJsApi": {
+          "id": "BFGbk0a71fKWY967",
+          "name": "CustomJS account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return {\"json\": {\"path\": \"https://www.nlbk.niedersachsen.de/download/164891/Test-pdf_3.pdf.pdf\"}};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -540,
+        1520
+      ],
+      "id": "ff9fe867-068c-488d-9564-a00646f86e03",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "urlInput": "https://www.google.de"
+      },
+      "type": "@custom-js/n8n-nodes-pdf-toolkit.websiteScreenshot",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "70c9ec6c-0f03-4d75-938d-a97ad6d72c45",
+      "name": "Take a screenshot of a website",
+      "credentials": {
+        "customJsApi": {
+          "id": "BFGbk0a71fKWY967",
+          "name": "CustomJS account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@custom-js/n8n-nodes-pdf-toolkit.mergePdfs",
+      "typeVersion": 1,
+      "position": [
+        640,
+        440
+      ],
+      "id": "89c2f31a-d872-4b0a-bf61-6f8d38396491",
+      "name": "Merge PDF",
+      "credentials": {
+        "customJsApi": {
+          "id": "BFGbk0a71fKWY967",
+          "name": "CustomJS account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        400,
+        440
+      ],
+      "id": "f377a28c-94f1-43bc-b327-a109825c5b3b",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "jsCode": "return {\"json\": {\"paths\": [\"https://www.nlbk.niedersachsen.de/download/164891/Test-pdf_3.pdf.pdf\", \"https://www.nlbk.niedersachsen.de/download/164891/Test-pdf_3.pdf.pdf\"]}};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -520,
+        1940
+      ],
+      "id": "2ff09608-2645-46a7-bd4a-8ddce3b9ce78",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "resource": "url",
+        "field_name": "={{ $json.paths }}"
+      },
+      "type": "@custom-js/n8n-nodes-pdf-toolkit.mergePdfs",
+      "typeVersion": 1,
+      "position": [
+        0,
+        1940
+      ],
+      "id": "a1d91ceb-e612-4ac7-a0e7-6e62e934acb3",
+      "name": "Merge PDF1",
+      "credentials": {
+        "customJsApi": {
+          "id": "BFGbk0a71fKWY967",
+          "name": "CustomJS account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "HTML to PDF": {
+      "main": [
+        [
+          {
+            "node": "Extract Pages From PDF",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Convert PDF into PNG",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Convert PDF into Text",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Compress PDF file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTML to PDF",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Take a screenshot of a website",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Pages From PDF": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Compress PDF file": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Compress PDF file1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Convert PDF into Text1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Convert PDF into PNG1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Extract Pages From PDF1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Merge PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Merge PDF1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "cdc6a786-2d98-44e0-94e1-3ad648639efc",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "b503899dfd9ae32bbf8e1f446a1f2c9b3c59f80c79b274c49b1606b7ae9579e1"
+  },
+  "id": "FJXNzRU41N6RchQo",
+  "tags": []
+}

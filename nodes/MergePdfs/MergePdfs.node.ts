@@ -26,21 +26,51 @@ export class MergePdfs implements INodeType {
         required: true,
       },
     ],
-    properties: [],
+    properties: [
+      {
+        displayName: "Resource",
+        name: "resource",
+        type: "options",
+        options: [
+          {
+            name: "Binary PDF",
+            value: "binary",
+          },
+          {
+            name: "URL",
+            value: "url",
+          },
+        ],
+        default: "binary",
+      },
+      {
+        displayName: "Data field name or URL array (seperate by comma)",
+        name: "field_name",
+        type: "string",
+        default: "data",
+        description:
+          "The field names for binary PDF file or urls that indicate PDF files. Please make sure the size of PDf file doesn't exceed 6mb. If it's bigger, pass an array of URLs rather than binary file.",
+        required: true,
+      },
+    ],
   };
 
   async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
     const items = this.getInputData();
     const returnData: INodeExecutionData[] = [];
 
-    const files = items.map((item, i) => {
-      if (!item.binary?.data) {
-        throw new Error(`No binary data found in "data" field for item ${i}`);
-      }
-      return Buffer.from(item.binary.data.data, "base64");
-    });
-
     const credentials = await this.getCredentials("customJsApi");
+    const isBinary =
+      (this.getNodeParameter("resource", 0) as string) === "binary";
+    const field_name = this.getNodeParameter("field_name", 0) as string[] | string;
+
+    const files = isBinary ? items.map((item, i) => {
+      if (item.binary?.data) {
+        return Buffer.from(item.binary.data.data, "base64");
+      }
+    }) : [];
+
+    const urls = !isBinary ? field_name : [];
 
     const options = {
       url: `https://e.customjs.io/__js1-${credentials.apiKey}`,
@@ -50,8 +80,11 @@ export class MergePdfs implements INodeType {
         "x-api-key": credentials.apiKey,
       },
       body: {
-        input: files,
-        code: "const { PDF_MERGE } = require('./utils'); const pdfBuffers = input.map(base64Str => Buffer.from(base64Str, 'base64')); return PDF_MERGE(pdfBuffers)",
+        input: isBinary ? { files } : { urls },
+        code: `
+              const { PDF_MERGE } = require('./utils'); 
+              input = [...input.files || [],...input.urls || []].filter(i => i); 
+              return PDF_MERGE(input);`,
         returnBinary: "true",
       },
       encoding: null,

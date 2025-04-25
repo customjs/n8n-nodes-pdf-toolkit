@@ -104,8 +104,7 @@ export class ExtractPages implements INodeType {
             : { urls: field_name, pageRange },
           code: `
             const { EXTRACT_PAGES_FROM_PDF } = require('./utils'); 
-            const file = input.file || input.urls; 
-            const pdfBuffer = file.data ? Buffer.from(Object.values(file.data)).toString('base64'): file; 
+            const pdfBuffer = input.file ? Buffer.from(input.file, 'base64') : input.urls; 
             return EXTRACT_PAGES_FROM_PDF(pdfBuffer, input.pageRange);`,
           returnBinary: "true",
         },
@@ -116,10 +115,8 @@ export class ExtractPages implements INodeType {
       const response = await this.helpers.request(options);
       const binaryData = await this.helpers.prepareBinaryData(
         response,
-        "output.png"
+        "output.pdf"
       );
-
-      console.log(response);
 
       returnData.push({
         json: items[i].json,
