@@ -94,8 +94,7 @@ export class CompressPDF implements INodeType {
           code: `
               const { PDF_COMPRESS } = require('./utils'); 
               input = input.file || input.urls; 
-              const pdfBuffer = input.data ? Buffer.from(Object.values(input.data)).toString('base64'): input; 
-              return PDF_COMPRESS(pdfBuffer);`,
+              return PDF_COMPRESS(input);`,
           returnBinary: "true",
         },
         encoding: null,

@@ -94,8 +94,7 @@ export class PdfToPng implements INodeType {
           code: `
             const { PDF2PNG } = require('./utils'); 
             input = input.file || input.urls; 
-            const pdfBuffer = input.data ? Buffer.from(Object.values(input.data)).toString('base64'): input; 
-            return PDF2PNG(pdfBuffer);`,
+            return PDF2PNG(input);`,
           returnBinary: "true",
         },
         encoding: null,

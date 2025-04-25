@@ -94,8 +94,7 @@ export class PdfToText implements INodeType {
           code: `
               const { PDFTOTEXT } = require('./utils'); 
               input = input.file || input.urls; 
-              const pdfBuffer = input.data ? Buffer.from(Object.values(input.data)).toString('base64'): input; 
-              return PDFTOTEXT(pdfBuffer);`,
+              return PDFTOTEXT(input);`,
           returnBinary: "false",
         },
         encoding: null,
