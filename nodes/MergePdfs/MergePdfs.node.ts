@@ -92,8 +92,7 @@ export class MergePdfs implements INodeType {
           code: `
               const { PDF_MERGE } = require('./utils'); 
               input = [...input.files || [],...input.urls || []].filter(i => i); 
-              const pdfBuffers = input.map(obj => obj.data ? Buffer.from(obj.data).toString('base64'): obj); 
-              return PDF_MERGE(pdfBuffers);`,
+              return PDF_MERGE(input);`,
           returnBinary: "true",
         },
         encoding: null,
