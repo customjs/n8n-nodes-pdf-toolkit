@@ -118,8 +118,6 @@ export class ExtractPages implements INodeType {
         "output.pdf"
       );
 
-      console.log(response);
-
       returnData.push({
         json: items[i].json,
         binary: {

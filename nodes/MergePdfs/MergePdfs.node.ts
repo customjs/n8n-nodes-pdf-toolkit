@@ -59,59 +59,50 @@ export class MergePdfs implements INodeType {
     const items = this.getInputData();
     const returnData: INodeExecutionData[] = [];
 
-    const getFile = (field_name: string, i: number) => {
-      const file = items[i].binary?.[field_name];
-      if (!file) {
-        throw new Error(
-          `No binary data found in field "${field_name}" for item ${i}`
-        );
+    const credentials = await this.getCredentials("customJsApi");
+    const isBinary =
+      (this.getNodeParameter("resource", 0) as string) === "binary";
+    const field_name = this.getNodeParameter("field_name", 0) as string[] | string;
+
+    const files = isBinary ? items.map((item, i) => {
+      if (item.binary?.data) {
+        return Buffer.from(item.binary.data.data, "base64");
       }
-      return Buffer.from(file.data, "base64");
-    };
+    }) : [];
 
-    for (let i = 0; i < items.length; i++) {
-      const credentials = await this.getCredentials("customJsApi");
-      const isBinary =
-        (this.getNodeParameter("resource", i) as string) === "binary";
-      const field_name = this.getNodeParameter("field_name", i) as string;
+    const urls = !isBinary ? field_name : [];
 
-      const files = isBinary
-        ? field_name.split(",").map((name) => getFile(name, i))
-        : [];
-      const urls = !isBinary ? field_name.split(",") : [];
-
-      const options = {
-        url: `https://e.customjs.io/__js1-${credentials.apiKey}`,
-        method: "POST",
-        headers: {
-          "customjs-origin": "n8n/mergePDFs",
-          "x-api-key": credentials.apiKey,
-        },
-        body: {
-          input: isBinary ? { files } : { urls },
-          code: `
+    const options = {
+      url: `https://e.customjs.io/__js1-${credentials.apiKey}`,
+      method: "POST",
+      headers: {
+        "customjs-origin": "n8n/mergePDFs",
+        "x-api-key": credentials.apiKey,
+      },
+      body: {
+        input: isBinary ? { files } : { urls },
+        code: `
               const { PDF_MERGE } = require('./utils'); 
               input = [...input.files || [],...input.urls || []].filter(i => i); 
               return PDF_MERGE(input);`,
-          returnBinary: "true",
-        },
-        encoding: null,
-        json: true,
-      };
+        returnBinary: "true",
+      },
+      encoding: null,
+      json: true,
+    };
 
-      const response = await this.helpers.request(options);
-      const binaryData = await this.helpers.prepareBinaryData(
-        response,
-        "output.pdf"
-      );
+    const response = await this.helpers.request(options);
+    const binaryData = await this.helpers.prepareBinaryData(
+      response,
+      "output.pdf"
+    );
 
-      returnData.push({
-        json: {} as IDataObject,
-        binary: {
-          data: binaryData,
-        },
-      });
-    }
+    returnData.push({
+      json: {} as IDataObject,
+      binary: {
+        data: binaryData,
+      },
+    });
 
     return [returnData];
   }
