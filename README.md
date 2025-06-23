@@ -78,3 +78,23 @@ Add your Api Key and store securely
 - Input Binary PDF file for conversion
 - If size of the binary file exceeds 6MB, pass it as URL.
 - Execute the workflow to get converted Pages from PDF file.
+
+### "SSL Checker" node
+
+- Add the **SSL Checker** node to your workflow.
+- Configure your CustomJS API credentials.
+- Input the domain you want to check (e.g., `example.com`).
+- Execute the workflow to get information about the SSL certificate, including the expiration date.
+
+### "Scraper" node
+
+- Add the **Scraper** node to your workflow.
+- Configure your CustomJS API credentials.
+- Input the website URL you want to scrape (must start with `https://`).
+- Optionally, define user actions (click, type, wait) to interact with page elements using selectors.
+- Choose the return type:  
+  - **Raw HTML**: Get the HTML content of the page.  
+  - **Screenshot (PNG)**: Get a screenshot of the page.
+- Enable or disable debug mode to control error handling for missing elements.
+- Execute the workflow to scrape the website and receive the desired output.
+
