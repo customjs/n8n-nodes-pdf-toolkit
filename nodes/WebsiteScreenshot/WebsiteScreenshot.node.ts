@@ -20,7 +20,7 @@ export class WebsiteScreenshot implements INodeType {
     outputs: ["main"],
     credentials: [
       {
-        name: "customJsApi",
+        name: "CustomJsApi",
         required: true,
       },
     ],
@@ -41,7 +41,7 @@ export class WebsiteScreenshot implements INodeType {
     const returnData: INodeExecutionData[] = [];
 
     for (let i = 0; i < items.length; i++) {
-      const credentials = await this.getCredentials("customJsApi");
+      const credentials = await this.getCredentials("CustomJsApi");
       const urlInput = this.getNodeParameter("urlInput", i) as string;
 
       const options = {

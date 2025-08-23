@@ -22,7 +22,7 @@ export class MergePdfs implements INodeType {
     outputs: ["main"],
     credentials: [
       {
-        name: "customJsApi",
+        name: "CustomJsApi",
         required: true,
       },
     ],
@@ -59,7 +59,7 @@ export class MergePdfs implements INodeType {
     const items = this.getInputData();
     const returnData: INodeExecutionData[] = [];
 
-    const credentials = await this.getCredentials("customJsApi");
+    const credentials = await this.getCredentials("CustomJsApi");
     const isBinary =
       (this.getNodeParameter("resource", 0) as string) === "binary";
     const field_name = this.getNodeParameter("field_name", 0) as string[] | string;
