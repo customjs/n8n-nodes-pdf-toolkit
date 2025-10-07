@@ -5,10 +5,10 @@ import {
   INodeTypeDescription,
 } from "n8n-workflow";
 
-export class Html2Pdf implements INodeType {
+export class html2Docx implements INodeType {
   description: INodeTypeDescription = {
     displayName: "HTML to Docx (Word) (customJs)",
-    name: "html2Docx",
+    name: "Html2Docx",
     icon: "file:customJs.svg",
     group: ["transform"],
     version: 1,
