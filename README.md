@@ -98,3 +98,16 @@ Add your Api Key and store securely
 - Enable or disable debug mode to control error handling for missing elements.
 - Execute the workflow to scrape the website and receive the desired output.
 
+### "Markdown to HTML" node
+
+- Add the **Markdown to HTML** node to your workflow.
+- Configure your CustomJS API credentials.
+- Input the Markdown content you want to convert to HTML.
+- Execute the workflow to get the converted HTML content.
+
+### "HTML to Docx (Word)" node
+
+- Add the **HTML to Docx (Word)** node to your workflow.
+- Configure your CustomJS API credentials.
+- Input the HTML content you want to convert to Docx (Word).
+- Execute the workflow to get the converted Docx (Word) file.
