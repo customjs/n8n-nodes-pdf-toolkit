@@ -5,7 +5,7 @@ import {
   INodeTypeDescription,
 } from "n8n-workflow";
 
-export class html2Docx implements INodeType {
+export class Html2Docx implements INodeType {
   description: INodeTypeDescription = {
     displayName: "HTML to Docx (Word) (customJs)",
     name: "Html2Docx",
