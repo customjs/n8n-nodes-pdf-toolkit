@@ -31,7 +31,7 @@
       "dist/nodes/PdfToText/PdfToText.node.js",
       "dist/nodes/PdfToPng/PdfToPng.node.js",
       "dist/nodes/ExtractPages/ExtractPages.node.js",
-      "dist/nodes/CompressPDF/CompressPDF.node.js"
+      "dist/nodes/CompressPDF/CompressPDF.node.js",
       "dist/nodes/Markdown2Html/Markdown2Html.node.js"
     ]
   },
