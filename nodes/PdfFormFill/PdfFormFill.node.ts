@@ -56,8 +56,8 @@ export class PdfFormFill implements INodeType {
         default: {},
         options: [
           {
-            name: "field",
-            displayName: "field",
+            name: "fields",
+            displayName: "fields",
             values: [
               {
                 displayName: "Name",
