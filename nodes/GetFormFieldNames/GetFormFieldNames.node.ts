@@ -99,7 +99,7 @@ export class GetFormFieldNames implements INodeType {
       
       returnData.push({
         json: {
-          output: response
+          output: JSON.parse(response.toString()),
         },
       });
     }
