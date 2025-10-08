@@ -126,7 +126,7 @@ export class PdfFormFill implements INodeType {
               const pdfInput = input.file;
               const fieldValues = Object.fromEntries((input.fields || []).map(x => [x.name, x.value]));
               return PDF_FILL_FORM(pdfInput, fieldValues);`,
-          returnBinary: true,
+          returnBinary: "true",
         },
         encoding: null,
         json: true,
