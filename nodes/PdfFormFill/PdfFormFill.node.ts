@@ -56,8 +56,8 @@ export class PdfFormFill implements INodeType {
         default: {},
         options: [
           {
-            name: "fields",
-            displayName: "fields",
+            name: "field",
+            displayName: "Field",
             values: [
               {
                 displayName: "Name",
@@ -116,13 +116,17 @@ export class PdfFormFill implements INodeType {
           "x-api-key": credentials.apiKey,
         },
         body: {
-          input: { file: file, fields: this.getNodeParameter("fields", i) },
+          input: { 
+            file: file, 
+            // n8n fixedCollection with multipleValues returns an object like { field: [{ name, value }, ...] }
+            fields: (this.getNodeParameter("fields", i) as any)?.field || []
+          },
           code: `
               const { PDF_FILL_FORM } = require('./utils'); 
               const pdfInput = input.file;
-              const fieldValues = Object.fromEntries((input.fields || []).filter(x => x?.field?.name).map(x => [x.field.name, x.field.value]));
+              const fieldValues = Object.fromEntries((input.fields || []).map(x => [x.name, x.value]));
               return PDF_FILL_FORM(pdfInput, fieldValues);`,
-          returnBinary: "true",
+          returnBinary: true,
         },
         encoding: null,
         json: true,
