@@ -1,0 +1,147 @@
+import {
+  IExecuteFunctions,
+  INodeExecutionData,
+  INodeType,
+  INodeTypeDescription,
+} from "n8n-workflow";
+
+export class PdfFormFill implements INodeType {
+  description: INodeTypeDescription = {
+    displayName: "PDF Form Fill (Fill PDF Fields) (CustomJs)",
+    name: "PdfFormFill",
+    icon: "file:customJs.svg",
+    group: ["transform"],
+    version: 1,
+    description: "Automatically fill out PDF form fields with dynamic data. Generate ready-to-send PDFs from your n8n workflows.",
+    defaults: {
+      name: "PDF Form Fill (Fill PDF Fields)",
+    },
+    inputs: ["main"],
+    outputs: ["main"],
+    credentials: [
+      {
+        name: "customJsApi",
+        required: true,
+      },
+    ],
+    properties: [
+      {
+        displayName: "Resource",
+        name: "resource",
+        type: "options",
+        options: [
+          {
+            name: "Binary PDF",
+            value: "binary",
+          },
+        ],
+        default: "binary",
+      },
+      {
+        displayName: "Data field name",
+        name: "field_name",
+        type: "string",
+        default: "data",
+        description:
+          "The field name for binary PDF file. Please make sure the size of PDf file doesn't exceed 6mb.",
+        required: true,
+      },{
+        displayName: "Form Fields",
+        name: "fields",
+        type: "fixedCollection",
+        typeOptions: {
+          multipleValues: true,
+        },
+        description: "Form fields to fill out. User Get PDF Form Field Names node to get the form field names.",
+        default: {},
+        options: [
+          {
+            name: "field",
+            displayName: "field",
+            values: [
+              {
+                displayName: "Name",
+                name: "name",
+                type: "string",
+                default: "",
+                description: "Name of the form field",
+                required: true,
+              },
+              {
+                displayName: "Value",
+                name: "value",
+                type: "string",
+                default: "",
+                description: "Value of the form field",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  };
+
+  async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
+    const items = this.getInputData();
+    const returnData: INodeExecutionData[] = [];
+
+    const getFile = (field_name: string, i: number) => {
+      const file = items[i].binary?.[field_name];
+      if (!file) {
+        throw new Error(
+          `No binary data found in field "${field_name}" for item ${i}`
+        );
+      }
+      return Buffer.from(file.data, "base64");
+    };
+
+    for (let i = 0; i < items.length; i++) {
+      const credentials = await this.getCredentials("customJsApi");
+      const field_name = this.getNodeParameter("field_name", i) as string;
+      const isBinary =
+        (this.getNodeParameter("resource", i) as string) === "binary";
+      const file = isBinary ? getFile(field_name, i) : "";
+
+      if (
+        !isBinary
+      ) {
+        throw new Error(`Invalid binary data`);
+      }
+
+      const options = {
+        url: `https://e.customjs.io/__js1-${credentials.apiKey}`,
+        method: "POST",
+        headers: {
+          "customjs-origin": "n8n/pdfFormFill",
+          "x-api-key": credentials.apiKey,
+        },
+        body: {
+          input: { file: file, fields: this.getNodeParameter("fields", i) },
+          code: `
+              const { PDF_FILL_FORM } = require('./utils'); 
+              const pdfInput = input.file;
+              const fieldValues = Object.fromEntries((input.fields || []).filter(x => x?.field?.name).map(x => [x.field.name, x.field.value]));
+              return PDF_FILL_FORM(pdfInput, fieldValues);`,
+          returnBinary: "true",
+        },
+        encoding: null,
+        json: true,
+      };
+
+      const response = await this.helpers.request(options);
+      const binaryData = await this.helpers.prepareBinaryData(
+        response,
+        "document.pdf"
+      );
+
+      returnData.push({
+        json: items[i].json,
+        binary: {
+          data: binaryData,
+        },
+      });
+    }
+
+    return [returnData];
+  }
+}
