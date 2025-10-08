@@ -1,6 +1,6 @@
 {
   "name": "@custom-js/n8n-nodes-pdf-toolkit",
-  "version": "1.19.0",
+  "version": "1.20.0",
   "description": "This is official node for interacting with APIs from customjs.space",
   "keywords": [
     "customjs",
@@ -33,7 +33,8 @@
       "dist/nodes/ExtractPages/ExtractPages.node.js",
       "dist/nodes/CompressPDF/CompressPDF.node.js",
       "dist/nodes/Markdown2Html/Markdown2Html.node.js",
-      "dist/nodes/Html2Docx/Html2Docx.node.js"
+      "dist/nodes/Html2Docx/Html2Docx.node.js",
+      "dist/nodes/GetFormFieldNames/GetFormFieldNames.node.js"
     ]
   },
   "devDependencies": {
