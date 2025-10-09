@@ -133,6 +133,14 @@ export class PdfFormFill implements INodeType {
       };
 
       const response = await this.helpers.request(options);
+      if (!response || (Buffer.isBuffer(response) && response.length === 0)) {
+        // No binary data returned; emit only JSON without a binary property
+        returnData.push({
+          json: items[i].json,
+        });
+        continue;
+      }
+
       const binaryData = await this.helpers.prepareBinaryData(
         response,
         "document.pdf"
