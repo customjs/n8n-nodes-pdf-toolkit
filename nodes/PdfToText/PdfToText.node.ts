@@ -7,12 +7,12 @@ import {
 
 export class PdfToText implements INodeType {
   description: INodeTypeDescription = {
-    displayName: "PDF To Text (CustomJs)",
+    displayName: "PDF To Text (CustomJS)",
     name: "PdfToText",
     icon: "file:customJs.svg",
     group: ["transform"],
     version: 1,
-    description: "Convert PDF into Text",
+    description: "Extract plain text from any PDF file. Ideal for automating data extraction and processing workflows in n8n.",
     defaults: {
       name: "Convert PDF into Text",
     },

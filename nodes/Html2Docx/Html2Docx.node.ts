@@ -7,12 +7,12 @@ import {
 
 export class Html2Docx implements INodeType {
   description: INodeTypeDescription = {
-    displayName: "HTML to Docx (Word) (customJs)",
+    displayName: "HTML to Docx (Word) (CustomJS)",
     name: "Html2Docx",
     icon: "file:customJs.svg",
     group: ["transform"],
     version: 1,
-    description: "Convert HTML to Docx (Word)",
+    description: "Convert any HTML content into a fully formatted Word (.docx) document. Ideal for generating reports, contracts, or templates directly from your Make.com scenarios.",
     defaults: {
       name: "HTML to Docx",
     },

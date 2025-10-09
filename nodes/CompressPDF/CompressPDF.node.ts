@@ -7,12 +7,12 @@ import {
 
 export class CompressPDF implements INodeType {
   description: INodeTypeDescription = {
-    displayName: "Compress PDF (CustomJs)",
+    displayName: "Compress PDF (CustomJS)",
     name: "CompressPDF",
     icon: "file:customJs.svg",
     group: ["transform"],
     version: 1,
-    description: "Compress PDF file",
+    description: "Reduce the file size of PDFs without losing quality. Perfect for optimized storage, sharing, and automation in n8n.",
     defaults: {
       name: "Compress PDF file",
     },

@@ -9,12 +9,12 @@ import {
 
 export class MergePdfs implements INodeType {
   description: INodeTypeDescription = {
-    displayName: "Merge PDFs (customJs)",
+    displayName: "Merge PDFs (CustomJS)",
     name: "mergePdfs",
     icon: "file:customJs.svg",
     group: ["transform"],
     version: 1,
-    description: "Merge PDF",
+    description: "Combine multiple PDF files into a single PDF. Perfect for reports, contracts, and document automation in n8n.",
     defaults: {
       name: "Merge PDF",
     },

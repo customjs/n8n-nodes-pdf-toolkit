@@ -7,7 +7,7 @@ import {
 
 export class GetFormFieldNames implements INodeType {
   description: INodeTypeDescription = {
-    displayName: "Get PDF Form Fields (CustomJs)",
+    displayName: "Get PDF Form Fields (CustomJS)",
     name: "GetFormFieldNames",
     icon: "file:customJs.svg",
     group: ["transform"],

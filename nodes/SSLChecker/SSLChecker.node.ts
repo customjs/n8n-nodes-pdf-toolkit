@@ -7,7 +7,7 @@ import {
 
 export class SSLChecker implements INodeType {
   description: INodeTypeDescription = {
-    displayName: "SSL Checker (SSL Certificate)",
+    displayName: "SSL Checker (SSL Certificate) (CustomJS)",
     name: "sslChecker",
     icon: "file:customJs.svg",
     group: ["transform"],

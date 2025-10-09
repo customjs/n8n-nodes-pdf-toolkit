@@ -7,12 +7,12 @@ import {
 
 export class Markdown2Html implements INodeType {
   description: INodeTypeDescription = {
-    displayName: "Markdown to HTML (customJs)",
+    displayName: "Markdown to HTML Converter (CustomJS)",
     name: "Markdown2Html",
     icon: "file:customJs.svg",
     group: ["transform"],
     version: 1,
-    description: "Convert Markdown to HTML",
+    description: "Instantly convert Markdown text into clean, styled HTML. Perfect for emails, web pages, or dynamic content generation inside n8n.",
     defaults: {
       name: "Markdown to HTML",
     },

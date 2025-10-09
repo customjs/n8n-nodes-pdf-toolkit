@@ -7,7 +7,7 @@ import {
 
 export class PdfFormFill implements INodeType {
   description: INodeTypeDescription = {
-    displayName: "PDF Form Fill (Fill PDF Fields) (CustomJs)",
+    displayName: "PDF Form Fill (Fill PDF Fields) (CustomJS)",
     name: "PdfFormFill",
     icon: "file:customJs.svg",
     group: ["transform"],

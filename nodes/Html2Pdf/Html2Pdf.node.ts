@@ -7,12 +7,12 @@ import {
 
 export class Html2Pdf implements INodeType {
   description: INodeTypeDescription = {
-    displayName: "HTML to PDF (customJs)",
+    displayName: "PDF Generator (from HTML) (CustomJS)",
     name: "html2Pdf",
     icon: "file:customJs.svg",
     group: ["transform"],
     version: 1,
-    description: "Convert HTML to PDF",
+    description: "Generate professional PDFs directly from HTML content. Perfect for reports, invoices, and templates in n8n.",
     defaults: {
       name: "HTML to PDF",
     },

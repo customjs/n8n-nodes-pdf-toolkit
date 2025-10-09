@@ -7,12 +7,12 @@ import {
 
 export class PdfToPng implements INodeType {
   description: INodeTypeDescription = {
-    displayName: "PDF To PNG (CustomJs)",
+    displayName: "PDF To PNG (CustomJS)",
     name: "PdfToPng",
     icon: "file:customJs.svg",
     group: ["transform"],
     version: 1,
-    description: "Convert PDF into PNG",
+    description: "Convert PDF pages into high-quality PNG images. Perfect for previews, thumbnails, or image-based workflows in n8n.",
     defaults: {
       name: "Convert PDF into PNG",
     },

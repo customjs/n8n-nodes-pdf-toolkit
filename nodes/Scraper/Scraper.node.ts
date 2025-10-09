@@ -7,12 +7,12 @@ import {
 
 export class Scraper implements INodeType {
   description: INodeTypeDescription = {
-    displayName: "Scraper (CustomJs)",
+    displayName: "Web Scraper for HTML Extraction and Screenshots (CustomJS)",
     name: "scraper",
     icon: "file:customJs.svg",
     group: ["transform"],
     version: 1,
-    description: "A web scraper module to crawl websites and interact with page elements like clicks and typing.",
+    description: "A web scraper module to crawl websites and interact with page elements (clicks, typing, etc.). The module returns raw HTML of the visited page.",
     defaults: {
       name: "Scraper",
     },

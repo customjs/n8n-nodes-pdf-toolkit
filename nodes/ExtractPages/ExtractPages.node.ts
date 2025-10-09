@@ -7,12 +7,12 @@ import {
 
 export class ExtractPages implements INodeType {
   description: INodeTypeDescription = {
-    displayName: "Extract Pages From PDF (CustomJs)",
+    displayName: "Extract Pages From PDF (CustomJS)",
     name: "ExtractPages",
     icon: "file:customJs.svg",
     group: ["transform"],
     version: 1,
-    description: "Extract Pages From PDF",
+    description: "Extract specific pages from a PDF and create a new PDF. Ideal for document automation and custom PDF workflows in n8n.",
     defaults: {
       name: "Extract Pages From PDF",
     },
