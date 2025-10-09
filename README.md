@@ -111,3 +111,19 @@ Add your Api Key and store securely
 - Configure your CustomJS API credentials.
 - Input the HTML content you want to convert to Docx (Word).
 - Execute the workflow to get the converted Docx (Word) file.
+
+
+### "PDF Form Fill" node
+
+- Add the **PDF Form Fill** node to your workflow.
+- Configure your CustomJS API credentials.
+- Input the PDF file you want to fill out.
+- Define the form fields and their values.
+- Execute the workflow to get the filled-out PDF file.
+
+### "Get PDF Form Field Names" node
+
+- Add the **Get PDF Form Field Names** node to your workflow.
+- Configure your CustomJS API credentials.
+- Input the PDF file you want to get form field names from.
+- Execute the workflow to get the form field names.
