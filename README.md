@@ -127,3 +127,12 @@ Add your Api Key and store securely
 - Configure your CustomJS API credentials.
 - Input the PDF file you want to get form field names from.
 - Execute the workflow to get the form field names.
+
+### "Invoice Generator" node
+
+- Add the **Invoice Generator** node to your workflow.
+- Configure your CustomJS API credentials.
+- Select a PDF template.
+- Fill in the issuer, payment, recipient, and billing information.
+- Add items to the invoice.
+- Execute the workflow to generate the PDF invoice.

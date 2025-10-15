@@ -55,7 +55,7 @@ jobs:
         run: |
           git config set advice.addIgnoredFile false
           git add package.json
-          git commit -m "NPM Publish from CI/CD [ci skip]" sdk || true
+          git commit -m "NPM Publish from CI/CD [ci skip]" || true
 
       - uses: ad-m/github-push-action@master
         with:

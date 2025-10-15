@@ -1,6 +1,6 @@
 {
   "name": "@custom-js/n8n-nodes-pdf-toolkit",
-  "version": "1.28.0",
+  "version": "1.29.0",
   "description": "This is official node for interacting with APIs from customjs.space",
   "keywords": [
     "customjs",
@@ -35,8 +35,13 @@
       "dist/nodes/Markdown2Html/Markdown2Html.node.js",
       "dist/nodes/Html2Docx/Html2Docx.node.js",
       "dist/nodes/GetFormFieldNames/GetFormFieldNames.node.js",
-      "dist/nodes/PdfFormFill/PdfFormFill.node.js"
+      "dist/nodes/PdfFormFill/PdfFormFill.node.js",
+      "dist/nodes/InvoiceGenerator/InvoiceGenerator.node.js"
     ]
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.7",
+    "nunjucks": "^3.2.4"
   },
   "devDependencies": {
     "n8n-workflow": "^0.141.0",
