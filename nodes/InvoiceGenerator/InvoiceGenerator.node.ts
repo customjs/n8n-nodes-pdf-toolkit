@@ -184,8 +184,11 @@ export class InvoiceGenerator implements INodeType {
 				const templateString = await fetch(tpl).then(r => r.text());
 				const renderedHtml = await nunjucks.renderString(
 					templateString, 
-					{ invoiceData: JSON.stringify(input).replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\n/g, '\\n') }
+					{ invoiceData: JSON.stringify(input).replace(/\\\\/g, '\\\\\\\\').replace(/'/g, \"\\\\'\").replace(/\\n/g, '\\\\n')
+					 
+					}
 				);
+				console.log('renderedHtml', renderedHtml);
 				return HTML2PDF(renderedHtml);
 			`;
 
