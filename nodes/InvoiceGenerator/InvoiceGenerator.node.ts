@@ -9,9 +9,9 @@ import {
 
 export class InvoiceGenerator implements INodeType {
 	description: INodeTypeDescription = {
-		displayName: 'Invoice Generator',
+		displayName: 'Invoice Generator (CustomJS)',
 		name: 'invoiceGenerator',
-		icon: 'file:invoice.svg',
+		icon: "file:customJs.svg",
 		group: ['transform'],
 		version: 1,
 		description: 'Create PDF invoices from data and templates',
@@ -205,16 +205,25 @@ export class InvoiceGenerator implements INodeType {
 				json: true,
 			};
 
-			const responseData = await this.helpers.request(options) as IDataObject;
-			const fileData = responseData.fileData as string;
+			const response = await this.helpers.request(options);
+			if (!response || (Buffer.isBuffer(response) && response.length === 0)) {
+				// No binary data returned; emit only JSON without a binary property
+				returnData.push({
+					json: items[i].json,
+				});
+				continue;
+			}
 
-			const binaryData = Buffer.from(fileData, 'base64');
-
-			const binary: IBinaryData = await this.helpers.prepareBinaryData(binaryData, 'Invoice.pdf', 'application/pdf');
+			const binaryData = await this.helpers.prepareBinaryData(
+				response,
+				"Invoice.pdf"
+			);
 
 			returnData.push({
-				json: {},
-				binary: { data: binary },
+				json: items[i].json,
+				binary: {
+					data: binaryData,
+				},
 			});
 		}
 
