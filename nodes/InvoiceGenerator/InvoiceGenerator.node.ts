@@ -204,7 +204,7 @@ export class InvoiceGenerator implements INodeType {
 					code: code,
 					returnBinary: 'true',
 				},
-				encoding: 'binary',
+				encoding: null,
 				json: true,
 			};
 
