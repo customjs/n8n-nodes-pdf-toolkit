@@ -132,11 +132,32 @@ export class InvoiceGenerator implements INodeType {
 				],
 			},
 			{
+				displayName: 'Items Input Mode',
+				name: 'itemsMode',
+				type: 'options',
+				options: [
+					{
+						name: 'Define Manually',
+						value: 'define',
+					},
+					{
+						name: 'Use JSON Input',
+						value: 'json',
+					},
+				],
+				default: 'define',
+			},
+			{
 				displayName: 'Items',
 				name: 'items',
 				type: 'fixedCollection',
 				typeOptions: {
 					multipleValues: true,
+				},
+				displayOptions: {
+					show: {
+						itemsMode: ['define'],
+					},
 				},
 				default: {},
 				placeholder: 'Add Item',
@@ -152,6 +173,18 @@ export class InvoiceGenerator implements INodeType {
 					}
 				],
 			},
+			{
+				displayName: 'Items JSON',
+				name: 'itemsJson',
+				type: 'json',
+				default: '[]',
+				displayOptions: {
+					show: {
+						itemsMode: ['json'],
+					},
+				},
+				description: 'A JSON array of invoice items. E.g., [{"description":"Item 1","quantity":2,"unitPrice":50}]',
+			},
 		],
 	};
 
@@ -166,7 +199,23 @@ export class InvoiceGenerator implements INodeType {
 			const payment = this.getNodeParameter('payment.paymentValues', i) as IDataObject;
 			const recipient = this.getNodeParameter('recipient.recipientValues', i) as IDataObject;
 			const billing = this.getNodeParameter('billing.billingValues', i) as IDataObject;
-			const invoiceItems = this.getNodeParameter('items.itemsValues', i) as IDataObject[];
+			const itemsMode = this.getNodeParameter('itemsMode', i) as string;
+			let invoiceItems: IDataObject[];
+
+			if (itemsMode === 'json') {
+				const itemsJson = this.getNodeParameter('itemsJson', i) as string;
+				try {
+					invoiceItems = JSON.parse(itemsJson);
+				} catch (error) {
+					if (error instanceof Error) {
+						throw new Error(`Invalid JSON in 'Items JSON' field: ${error.message}`);
+					}
+					throw new Error(`Invalid JSON in 'Items JSON' field: ${String(error)}`);
+				}
+			} else {
+				const itemsData = this.getNodeParameter('items', i) as { itemsValues: IDataObject[] };
+				invoiceItems = itemsData.itemsValues;
+			}
 
 			const invoiceData = {
 				issuer,
