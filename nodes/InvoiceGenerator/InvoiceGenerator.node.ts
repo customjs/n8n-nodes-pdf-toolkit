@@ -203,14 +203,22 @@ export class InvoiceGenerator implements INodeType {
 			let invoiceItems: IDataObject[];
 
 			if (itemsMode === 'json') {
-				const itemsJson = this.getNodeParameter('itemsJson', i) as string;
-				try {
-					invoiceItems = JSON.parse(itemsJson);
-				} catch (error) {
-					if (error instanceof Error) {
-						throw new Error(`Invalid JSON in 'Items JSON' field: ${error.message}`);
+				const itemsJson = this.getNodeParameter('itemsJson', i);
+
+				if (typeof itemsJson === 'string') {
+					try {
+						invoiceItems = JSON.parse(itemsJson);
+					} catch (error) {
+						if (error instanceof Error) {
+							throw new Error(`Invalid JSON in 'Items JSON' field: ${error.message}`);
+						}
+						throw new Error(`Invalid JSON in 'Items JSON' field: ${String(error)}`);
 					}
-					throw new Error(`Invalid JSON in 'Items JSON' field: ${String(error)}`);
+				} else if (Array.isArray(itemsJson)) {
+					invoiceItems = itemsJson as IDataObject[];
+				} else {
+					// Handle cases where the field might be empty or have other non-array/non-string values
+					invoiceItems = [];
 				}
 			} else {
 				const itemsData = this.getNodeParameter('items', i) as { itemsValues: IDataObject[] };
