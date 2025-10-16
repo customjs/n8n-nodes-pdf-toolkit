@@ -177,7 +177,7 @@ export class InvoiceGenerator implements INodeType {
 				displayName: 'Items JSON',
 				name: 'itemsJson',
 				type: 'json',
-				default: '[]',
+				default: '[{"description":"Item 1","quantity":2,"unitPrice":50}]',
 				displayOptions: {
 					show: {
 						itemsMode: ['json'],
@@ -217,13 +217,20 @@ export class InvoiceGenerator implements INodeType {
 				} else if (Array.isArray(itemsJson)) {
 					invoiceItems = itemsJson as IDataObject[];
 				} else {
-					// Handle cases where the field might be empty or have other non-array/non-string values
 					invoiceItems = [];
 				}
 			} else {
 				const itemsData = this.getNodeParameter('items', i) as { itemsValues: IDataObject[] };
 				invoiceItems = itemsData.itemsValues;
 			}
+
+			invoiceItems = invoiceItems.map(item => {
+				return {
+					description: item.description,
+					quantity: Number(item.quantity),
+					unitPrice: Number(item.unitPrice),
+				};
+			});
 
 			const invoiceData = {
 				issuer,
