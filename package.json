@@ -1,6 +1,6 @@
 {
   "name": "@custom-js/n8n-nodes-pdf-toolkit",
-  "version": "1.33.0",
+  "version": "1.34.0",
   "description": "This is official node for interacting with APIs from customjs.space",
   "keywords": [
     "customjs",
