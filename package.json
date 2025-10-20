@@ -9,16 +9,18 @@
     "pdf-toolkit"
   ],
   "homepage": "https://www.customjs.space/",
-  "bugs": {
-    "url": "https://github.com/customjs/n8n-nodes-pdf-toolkit/issues"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/customjs/n8n-nodes-pdf-toolkit.git"
   },
-  "license": "ISC",
+  "license": "MIT",
   "author": {
     "name": "Henrik Lippke",
     "email": "h@customjs.io"
   },
   "files": [
-    "dist"
+    "dist",
+    "credentials"
   ],
   "n8n": {
     "n8nNodesApiVersion": 1,
