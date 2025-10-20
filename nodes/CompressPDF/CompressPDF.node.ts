@@ -88,16 +88,16 @@ export class CompressPDF implements INodeType {
         headers: {
           "customjs-origin": "n8n/compressPdf",
           "x-api-key": credentials.apiKey,
+          "Content-Type": "application/json",
         },
-        body: {
+        body: JSON.stringify({
           input: isBinary ? { file: file } : { urls: field_name },
           code: `
               const { PDF_COMPRESS } = require('./utils'); 
               input = input.file || input.urls; 
               return PDF_COMPRESS(input);`,
           returnBinary: "true",
-        },
-        json: true,
+        }),
         returnFullResponse: true,
         responseType: 'arraybuffer',
       };

@@ -53,13 +53,13 @@ export class Html2Pdf implements INodeType {
         headers: {
           "customjs-origin": "n8n/generatePDF",
           "x-api-key": credentials.apiKey,
+          "Content-Type": "application/json",
         },
-        body: {
+        body: JSON.stringify({
           input: htmlInput,
           code: "const { HTML2PDF } = require('./utils'); return HTML2PDF(input)",
           returnBinary: "true",
-        },
-        json: true,
+        }),
         returnFullResponse: true,
         responseType: 'arraybuffer',
       };

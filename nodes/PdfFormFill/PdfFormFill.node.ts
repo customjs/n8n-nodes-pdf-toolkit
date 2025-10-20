@@ -114,8 +114,9 @@ export class PdfFormFill implements INodeType {
         headers: {
           "customjs-origin": "n8n/pdfFormFill",
           "x-api-key": credentials.apiKey,
+          "Content-Type": "application/json",
         },
-        body: {
+        body: JSON.stringify({
           input: { 
             file: file, 
             // n8n fixedCollection with multipleValues returns an object like { field: [{ name, value }, ...] }
@@ -127,8 +128,7 @@ export class PdfFormFill implements INodeType {
               const fieldValues = Object.fromEntries((input.fields || []).map(x => [x.name, x.value]));
               return PDF_FILL_FORM(pdfInput, fieldValues);`,
           returnBinary: "true",
-        },
-        json: true,
+        }),
         returnFullResponse: true,
         responseType: 'arraybuffer',
       };

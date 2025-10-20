@@ -88,16 +88,16 @@ export class PdfToPng implements INodeType {
         headers: {
           "customjs-origin": "n8n/pdfToPng",
           "x-api-key": credentials.apiKey,
+          "Content-Type": "application/json",
         },
-        body: {
+        body: JSON.stringify({
           input: isBinary ? { file: file } : { urls: field_name },
           code: `
             const { PDF2PNG } = require('./utils'); 
             input = input.file || input.urls; 
             return PDF2PNG(input);`,
           returnBinary: "true",
-        },
-        json: true,
+        }),
         returnFullResponse: true,
         responseType: 'arraybuffer',
       };

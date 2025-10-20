@@ -53,13 +53,13 @@ export class Html2Docx implements INodeType {
         headers: {
           "customjs-origin": "n8n/html2Docx",
           "x-api-key": credentials.apiKey,
+          "Content-Type": "application/json",
         },
-        body: {
+        body: JSON.stringify({
           input: htmlInput,
           code: "const { HTML2DOCX } = require('./utils'); return HTML2DOCX(input)",
           returnBinary: "true",
-        },
-        json: true,
+        }),
         returnFullResponse: true,
         responseType: 'arraybuffer',
       };

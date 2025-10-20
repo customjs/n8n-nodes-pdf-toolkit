@@ -255,20 +255,19 @@ export class InvoiceGenerator implements INodeType {
 				console.log('renderedHtml', renderedHtml);
 				return HTML2PDF(renderedHtml);
 			`;
-
 			const options = {
 				url: `https://e.customjs.io/__js1-${credentials.apiKey}`,
 				method: 'POST' as const,
 				headers: {
 					'customjs-origin': 'n8n/invoice-generator',
 					'x-api-key': credentials.apiKey,
+					'Content-Type': 'application/json',
 				},
-				body: {
+				body: JSON.stringify({
 					input: invoiceData,
 					code: code,
 					returnBinary: 'true',
-				},
-				json: true,
+				}),
 				returnFullResponse: true,
 				responseType: 'arraybuffer',
 			};
@@ -276,7 +275,6 @@ export class InvoiceGenerator implements INodeType {
 			const responseData = await this.helpers.httpRequest(options);
 			const response = responseData.body;
 			if (!response || (Buffer.isBuffer(response) && response.length === 0)) {
-				// No binary data returned; emit only JSON without a binary property
 				returnData.push({
 					json: items[i].json,
 				});

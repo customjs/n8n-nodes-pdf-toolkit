@@ -78,16 +78,16 @@ export class MergePdfs implements INodeType {
       headers: {
         "customjs-origin": "n8n/mergePDFs",
         "x-api-key": credentials.apiKey,
+        "Content-Type": "application/json",
       },
-      body: {
+      body: JSON.stringify({
         input: isBinary ? { files } : { urls },
         code: `
               const { PDF_MERGE } = require('./utils'); 
               input = [...input.files || [],...input.urls || []].filter(i => i); 
               return PDF_MERGE(input);`,
         returnBinary: "true",
-      },
-      json: true,
+      }),
       returnFullResponse: true,
       responseType: 'arraybuffer',
     };

@@ -145,16 +145,16 @@ export class Scraper implements INodeType {
         headers: {
           "customjs-origin": "n8n/scraper",
           "x-api-key": credentials.apiKey,
+          "Content-Type": "application/json",
         },
-        body: {
+        body: JSON.stringify({
           input: JSON.stringify(payload),
           code:
             `const { SCRAPER } = require('./utils'); ` +
             `const payload = input; ` +
             `return SCRAPER(payload.url, payload.commands || [], "${returnValueType === "binary" ? "image" : "html"}", ${debug ? "true" : "false"});`,
           returnBinary: returnValueType === "binary" ? "true" : "false",
-        },
-        json: true,
+        }),
         returnFullResponse: returnValueType === "binary",
         responseType: returnValueType === "binary" ? 'arraybuffer' : undefined,
       };

@@ -97,8 +97,9 @@ export class ExtractPages implements INodeType {
         headers: {
           "customjs-origin": "n8n/extractPages",
           "x-api-key": credentials.apiKey,
+          "Content-Type": "application/json",
         },
-        body: {
+        body: JSON.stringify({
           input: isBinary
             ? { file: file, pageRange }
             : { urls: field_name, pageRange },
@@ -107,8 +108,7 @@ export class ExtractPages implements INodeType {
             const pdfBuffer = input.file ? Buffer.from(input.file, 'base64') : input.urls; 
             return EXTRACT_PAGES_FROM_PDF(pdfBuffer, input.pageRange);`,
           returnBinary: "true",
-        },
-        json: true,
+        }),
         returnFullResponse: true,
         responseType: 'arraybuffer',
       };

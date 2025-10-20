@@ -50,13 +50,13 @@ export class WebsiteScreenshot implements INodeType {
         headers: {
           "customjs-origin": "n8n/screenshot",
           "x-api-key": credentials.apiKey,
+          "Content-Type": "application/json",
         },
-        body: {
+        body: JSON.stringify({
           input: urlInput,
           code: "const { SCREENSHOT } = require('./utils'); return SCREENSHOT(input);",
           returnBinary: "true",
-        },
-        json: true,
+        }),
         returnFullResponse: true,
         responseType: 'arraybuffer',
       };
