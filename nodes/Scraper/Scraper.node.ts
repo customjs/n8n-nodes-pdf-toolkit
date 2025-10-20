@@ -155,9 +155,12 @@ export class Scraper implements INodeType {
           returnBinary: returnValueType === "binary" ? "true" : "false",
         },
         json: true,
+        returnFullResponse: returnValueType === "binary",
+        responseType: returnValueType === "binary" ? 'arraybuffer' : undefined,
       };
 
-      const response = await this.helpers.httpRequest(options);
+      const responseData = await this.helpers.httpRequest(options);
+      const response = returnValueType === "binary" ? responseData.body : responseData;
 
       if (returnValueType === "binary") {
         if (!response || (Buffer.isBuffer(response) && response.length === 0)) {
