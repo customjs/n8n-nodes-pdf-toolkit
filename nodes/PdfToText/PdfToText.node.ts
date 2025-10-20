@@ -84,7 +84,7 @@ export class PdfToText implements INodeType {
 
       const options = {
         url: `https://e.customjs.io/__js1-${credentials.apiKey}`,
-        method: "POST",
+        method: 'POST' as const,
         headers: {
           "customjs-origin": "n8n/pdfToText",
           "x-api-key": credentials.apiKey,
@@ -97,11 +97,10 @@ export class PdfToText implements INodeType {
               return PDFTOTEXT(input);`,
           returnBinary: "false",
         },
-        encoding: null,
         json: true,
       };
 
-      const response = await this.helpers.request(options);
+      const response = await this.helpers.httpRequest(options);
 
       returnData.push({
         json: {

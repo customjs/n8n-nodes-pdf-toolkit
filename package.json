@@ -13,7 +13,11 @@
     "url": "https://github.com/customjs/n8n-nodes-pdf-toolkit/issues"
   },
   "license": "ISC",
-  "author": "Julian Szuper",
+  "author": {
+    "name": "Henrik Lippke",
+    "email": "h@customjs.io"
+  }
+  ,
   "files": [
     "dist"
   ],

@@ -141,7 +141,7 @@ export class Scraper implements INodeType {
 
       const options = {
         url: `https://e.customjs.io/__js1-${credentials.apiKey}`,
-        method: "POST",
+        method: 'POST' as const,
         headers: {
           "customjs-origin": "n8n/scraper",
           "x-api-key": credentials.apiKey,
@@ -154,11 +154,10 @@ export class Scraper implements INodeType {
             `return SCRAPER(payload.url, payload.commands || [], "${returnValueType === "binary" ? "image" : "html"}", ${debug ? "true" : "false"});`,
           returnBinary: returnValueType === "binary" ? "true" : "false",
         },
-        encoding: null,
         json: true,
       };
 
-      const response = await this.helpers.request(options);
+      const response = await this.helpers.httpRequest(options);
 
       if (returnValueType === "binary") {
         if (!response || (Buffer.isBuffer(response) && response.length === 0)) {
