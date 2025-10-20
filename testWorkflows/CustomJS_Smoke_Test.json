@@ -12,7 +12,7 @@
       "id": "5016ff34-417a-4495-92f9-cc37b79ec5a4",
       "name": "Convert PDF into Text",
       "credentials": {
-        "customJsApi": {
+        "CustomJsApi": {
           "id": "BFGbk0a71fKWY967",
           "name": "CustomJS account"
         }
@@ -31,7 +31,7 @@
       "id": "7a8e460a-7bca-440d-a6ca-621d65d5e319",
       "name": "HTML to PDF",
       "credentials": {
-        "customJsApi": {
+        "CustomJsApi": {
           "id": "BFGbk0a71fKWY967",
           "name": "CustomJS account"
         }
@@ -59,7 +59,7 @@
       "id": "c501d285-3595-4392-a462-17d63077aac2",
       "name": "Convert PDF into PNG",
       "credentials": {
-        "customJsApi": {
+        "CustomJsApi": {
           "id": "BFGbk0a71fKWY967",
           "name": "CustomJS account"
         }
@@ -76,7 +76,7 @@
       "id": "2860083d-adb8-4d09-98f6-739fb8dfcfae",
       "name": "Extract Pages From PDF",
       "credentials": {
-        "customJsApi": {
+        "CustomJsApi": {
           "id": "BFGbk0a71fKWY967",
           "name": "CustomJS account"
         }
@@ -93,7 +93,7 @@
       "id": "a4e509aa-6ed7-40ea-b7e0-a3c5fa306e9e",
       "name": "Compress PDF file",
       "credentials": {
-        "customJsApi": {
+        "CustomJsApi": {
           "id": "BFGbk0a71fKWY967",
           "name": "CustomJS account"
         }
@@ -113,7 +113,7 @@
       "id": "fdf55298-d1d8-4080-a50b-871cff055dfd",
       "name": "Convert PDF into Text1",
       "credentials": {
-        "customJsApi": {
+        "CustomJsApi": {
           "id": "BFGbk0a71fKWY967",
           "name": "CustomJS account"
         }
@@ -133,7 +133,7 @@
       "id": "c2e24235-7c10-42b5-9554-edefed812537",
       "name": "Convert PDF into PNG1",
       "credentials": {
-        "customJsApi": {
+        "CustomJsApi": {
           "id": "BFGbk0a71fKWY967",
           "name": "CustomJS account"
         }
@@ -153,7 +153,7 @@
       "id": "2a0618c0-568d-4ba5-b86d-b3a4f67171b6",
       "name": "Extract Pages From PDF1",
       "credentials": {
-        "customJsApi": {
+        "CustomJsApi": {
           "id": "BFGbk0a71fKWY967",
           "name": "CustomJS account"
         }
@@ -173,7 +173,7 @@
       "id": "7e01f8eb-3c25-42cc-8b35-1e53bc65fb56",
       "name": "Compress PDF file1",
       "credentials": {
-        "customJsApi": {
+        "CustomJsApi": {
           "id": "BFGbk0a71fKWY967",
           "name": "CustomJS account"
         }
@@ -205,7 +205,7 @@
       "id": "70c9ec6c-0f03-4d75-938d-a97ad6d72c45",
       "name": "Take a screenshot of a website",
       "credentials": {
-        "customJsApi": {
+        "CustomJsApi": {
           "id": "BFGbk0a71fKWY967",
           "name": "CustomJS account"
         }
@@ -222,7 +222,7 @@
       "id": "89c2f31a-d872-4b0a-bf61-6f8d38396491",
       "name": "Merge PDF",
       "credentials": {
-        "customJsApi": {
+        "CustomJsApi": {
           "id": "BFGbk0a71fKWY967",
           "name": "CustomJS account"
         }
@@ -266,7 +266,7 @@
       "id": "a1d91ceb-e612-4ac7-a0e7-6e62e934acb3",
       "name": "Merge PDF1",
       "credentials": {
-        "customJsApi": {
+        "CustomJsApi": {
           "id": "BFGbk0a71fKWY967",
           "name": "CustomJS account"
         }

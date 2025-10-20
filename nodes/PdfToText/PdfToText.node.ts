@@ -20,7 +20,7 @@ export class PdfToText implements INodeType {
     outputs: ["main"],
     credentials: [
       {
-        name: "customJsApi",
+        name: "CustomJsApi",
         required: true,
       },
     ],
@@ -68,7 +68,7 @@ export class PdfToText implements INodeType {
     };
 
     for (let i = 0; i < items.length; i++) {
-      const credentials = await this.getCredentials("customJsApi");
+      const credentials = await this.getCredentials("CustomJsApi");
       const field_name = this.getNodeParameter("field_name", i) as string;
       const isBinary =
         (this.getNodeParameter("resource", i) as string) === "binary";

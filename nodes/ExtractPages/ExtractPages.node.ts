@@ -20,7 +20,7 @@ export class ExtractPages implements INodeType {
     outputs: ["main"],
     credentials: [
       {
-        name: "customJsApi",
+        name: "CustomJsApi",
         required: true,
       },
     ],
@@ -76,7 +76,7 @@ export class ExtractPages implements INodeType {
     };
 
     for (let i = 0; i < items.length; i++) {
-      const credentials = await this.getCredentials("customJsApi");
+      const credentials = await this.getCredentials("CustomJsApi");
       const field_name = this.getNodeParameter("field_name", i) as string;
       const pageRange = this.getNodeParameter("pageRange", i) as string;
       const isBinary =

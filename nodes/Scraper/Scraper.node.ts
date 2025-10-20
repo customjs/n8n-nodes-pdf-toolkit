@@ -20,7 +20,7 @@ export class Scraper implements INodeType {
     outputs: ["main"],
     credentials: [
       {
-        name: "customJsApi",
+        name: "CustomJsApi",
         required: true,
       },
     ],
@@ -121,7 +121,7 @@ export class Scraper implements INodeType {
     const returnData: INodeExecutionData[] = [];
 
     for (let i = 0; i < items.length; i++) {
-      const credentials = await this.getCredentials("customJsApi");
+      const credentials = await this.getCredentials("CustomJsApi");
       const url = this.getNodeParameter("url", i) as string;
       if (!url.startsWith("https://")) {
         throw new Error("Website URL must start with https://");

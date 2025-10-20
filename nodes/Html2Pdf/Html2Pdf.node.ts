@@ -20,7 +20,7 @@ export class Html2Pdf implements INodeType {
     outputs: ["main"],
     credentials: [
       {
-        name: "customJsApi",
+        name: "CustomJsApi",
         required: true,
       },
     ],
@@ -44,7 +44,7 @@ export class Html2Pdf implements INodeType {
     const returnData: INodeExecutionData[] = [];
 
     for (let i = 0; i < items.length; i++) {
-      const credentials = await this.getCredentials("customJsApi");
+      const credentials = await this.getCredentials("CustomJsApi");
       const htmlInput = this.getNodeParameter("htmlInput", i) as string;
 
       const options = {
