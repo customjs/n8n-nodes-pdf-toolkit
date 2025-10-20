@@ -110,13 +110,12 @@ export class PdfFormFill implements INodeType {
 
       const options = {
         url: `https://e.customjs.io/__js1-${credentials.apiKey}`,
-        method: 'POST' as const,
+        method: 'POST',
         headers: {
           "customjs-origin": "n8n/pdfFormFill",
           "x-api-key": credentials.apiKey,
-          "Content-Type": "application/json",
         },
-        body: JSON.stringify({
+        body: {
           input: { 
             file: file, 
             // n8n fixedCollection with multipleValues returns an object like { field: [{ name, value }, ...] }
@@ -128,13 +127,12 @@ export class PdfFormFill implements INodeType {
               const fieldValues = Object.fromEntries((input.fields || []).map(x => [x.name, x.value]));
               return PDF_FILL_FORM(pdfInput, fieldValues);`,
           returnBinary: "true",
-        }),
-        returnFullResponse: true,
-        responseType: 'arraybuffer',
+        },
+        encoding: null,
+        json: true,
       };
 
-      const responseData = await this.helpers.httpRequest(options);
-      const response = responseData.body;
+      const response = await this.helpers.request(options);
       if (!response || (Buffer.isBuffer(response) && response.length === 0)) {
         // No binary data returned; emit only JSON without a binary property
         returnData.push({

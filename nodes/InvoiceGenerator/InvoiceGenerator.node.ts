@@ -257,34 +257,32 @@ export class InvoiceGenerator implements INodeType {
 			`;
 			const options = {
 				url: `https://e.customjs.io/__js1-${credentials.apiKey}`,
-				method: 'POST' as const,
+				method: 'POST',
 				headers: {
 					'customjs-origin': 'n8n/invoice-generator',
 					'x-api-key': credentials.apiKey,
-					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify({
+				body: {
 					input: invoiceData,
 					code: code,
 					returnBinary: 'true',
-				}),
-				returnFullResponse: true,
-				responseType: 'arraybuffer',
+				},
+				encoding: null,
+				json: true,
 			};
 
-			const responseData = await this.helpers.httpRequest(options);
-			const response = responseData.body;
+			const response = await this.helpers.request(options);
 			if (!response || (Buffer.isBuffer(response) && response.length === 0)) {
 				returnData.push({
 					json: items[i].json,
 				});
+				continue;
 			}
 
 			const binaryData = await this.helpers.prepareBinaryData(
 				response,
 				"Invoice.pdf"
 			);
-
 			returnData.push({
 				json: items[i].json,
 				binary: {

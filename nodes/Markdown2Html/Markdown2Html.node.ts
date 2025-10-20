@@ -62,7 +62,7 @@ export class Markdown2Html implements INodeType {
         json: true,
       };
 
-      const response = await this.helpers.httpRequest(options);
+      const response = await this.helpers.request(options);
 
       returnData.push({
         json: {

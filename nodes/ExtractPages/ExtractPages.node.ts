@@ -93,13 +93,12 @@ export class ExtractPages implements INodeType {
 
       const options = {
         url: `https://e.customjs.io/__js1-${credentials.apiKey}`,
-        method: 'POST' as const,
+        method: 'POST',
         headers: {
           "customjs-origin": "n8n/extractPages",
           "x-api-key": credentials.apiKey,
-          "Content-Type": "application/json",
         },
-        body: JSON.stringify({
+        body: {
           input: isBinary
             ? { file: file, pageRange }
             : { urls: field_name, pageRange },
@@ -108,13 +107,12 @@ export class ExtractPages implements INodeType {
             const pdfBuffer = input.file ? Buffer.from(input.file, 'base64') : input.urls; 
             return EXTRACT_PAGES_FROM_PDF(pdfBuffer, input.pageRange);`,
           returnBinary: "true",
-        }),
-        returnFullResponse: true,
-        responseType: 'arraybuffer',
+        },
+        encoding: null,
+        json: true,
       };
 
-      const responseData = await this.helpers.httpRequest(options);
-      const response = responseData.body;
+      const response = await this.helpers.request(options);
       if (!response || (Buffer.isBuffer(response) && response.length === 0)) {
         // No binary data returned; emit only JSON without a binary property
         returnData.push({

@@ -141,26 +141,24 @@ export class Scraper implements INodeType {
 
       const options = {
         url: `https://e.customjs.io/__js1-${credentials.apiKey}`,
-        method: 'POST' as const,
+        method: 'POST',
         headers: {
           "customjs-origin": "n8n/scraper",
           "x-api-key": credentials.apiKey,
-          "Content-Type": "application/json",
         },
-        body: JSON.stringify({
+        body: {
           input: JSON.stringify(payload),
           code:
             `const { SCRAPER } = require('./utils'); ` +
             `const payload = input; ` +
             `return SCRAPER(payload.url, payload.commands || [], "${returnValueType === "binary" ? "image" : "html"}", ${debug ? "true" : "false"});`,
           returnBinary: returnValueType === "binary" ? "true" : "false",
-        }),
-        returnFullResponse: returnValueType === "binary",
-        responseType: returnValueType === "binary" ? 'arraybuffer' : undefined,
+        },
+        encoding: null,
+        json: true,
       };
 
-      const responseData = await this.helpers.httpRequest(options);
-      const response = returnValueType === "binary" ? responseData.body : responseData;
+      const response = await this.helpers.request(options);
 
       if (returnValueType === "binary") {
         if (!response || (Buffer.isBuffer(response) && response.length === 0)) {
