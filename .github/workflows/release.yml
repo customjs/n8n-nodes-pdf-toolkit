@@ -38,10 +38,8 @@ jobs:
 
       - name: Set git config
         run: |
-          git config --global user.email "info@henriklippke.de"
-          git config --global user.name "Henrik Lippke"
-          git config user.email "info@henriklippke.de"
-          git config user.name "Henrik Lippke"
+          git config user.email "${{ secrets.GH_EMAIL }}"
+          git config user.name "${{ secrets.GH_USER }}"
 
       - name: NPM Publish
         run: |
