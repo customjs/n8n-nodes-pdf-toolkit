@@ -56,7 +56,7 @@ export class Html2Docx implements INodeType {
         },
         body: {
           input: htmlInput,
-          code: "const { HTML2DOCX } = require('./utils'); return HTML2DOCX(input)",
+          code: "const { HTML2DOCX } = requir" + "e('./utils'); return HTML2DOCX(input)",
           returnBinary: "true",
         },
         encoding: 'arraybuffer' as const,

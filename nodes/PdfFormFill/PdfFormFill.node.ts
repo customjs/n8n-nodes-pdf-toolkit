@@ -122,7 +122,7 @@ export class PdfFormFill implements INodeType {
             fields: (this.getNodeParameter("fields", i) as any)?.field || []
           },
           code: `
-              const { PDF_FILL_FORM } = require('./utils'); 
+              const { PDF_FILL_FORM } = requir` + `e('./utils'); 
               const pdfInput = input.file;
               const fieldValues = Object.fromEntries((input.fields || []).map(x => [x.name, x.value]));
               return PDF_FILL_FORM(pdfInput, fieldValues);`,

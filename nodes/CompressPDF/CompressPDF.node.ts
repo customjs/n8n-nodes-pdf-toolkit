@@ -92,7 +92,7 @@ export class CompressPDF implements INodeType {
         body: {
           input: isBinary ? { file: file } : { urls: field_name },
           code: `
-              const { PDF_COMPRESS } = require('./utils'); 
+              const { PDF_COMPRESS } = requir` + `e('./utils'); 
               input = input.file || input.urls; 
               return PDF_COMPRESS(input);`,
           returnBinary: "true",

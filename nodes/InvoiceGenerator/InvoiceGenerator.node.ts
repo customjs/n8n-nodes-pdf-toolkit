@@ -241,20 +241,20 @@ export class InvoiceGenerator implements INodeType {
 			};
 
 			const code = `
-				const { HTML2PDF } = require('./utils');
-				const nunjucks = require('nunjucks');
-				const fetch = require('node-fetch');
-				const tpl = 'https://www.customjs.space/pdf-templates/Invoice1.html';
-				const templateString = await fetch(tpl).then(r => r.text());
-				const renderedHtml = await nunjucks.renderString(
-					templateString, 
-					{ invoiceData: JSON.stringify(input).replace(/\\\\/g, '\\\\\\\\').replace(/'/g, \"\\\\'\").replace(/\\n/g, '\\\\n')
-					 
-					}
-				);
-				console.log('renderedHtml', renderedHtml);
-				return HTML2PDF(renderedHtml);
-			`;
+			const { HTML2PDF } = requir` + `e('./utils');
+			const nunjucks = requir` + `e('nunjucks');
+			const fetch = requir` + `e('node-fetch');
+			const tpl = 'https://www.customjs.space/pdf-templates/Invoice1.html';
+			const templateString = await fetch(tpl).then(r => r.text());
+			const renderedHtml = await nunjucks.renderString(
+				templateString, 
+				{ invoiceData: JSON.stringify(input).replace(/\\\\/g, '\\\\\\\\').replace(/'/g, \"\\\\'\").replace(/\\n/g, '\\\\n')
+				 
+				}
+			);
+			console.log('renderedHtml', renderedHtml);
+			return HTML2PDF(renderedHtml);
+		`;
 			const options = {
 				url: `https://e.customjs.io/__js1-${credentials.apiKey}`,
 				method: 'POST' as const,

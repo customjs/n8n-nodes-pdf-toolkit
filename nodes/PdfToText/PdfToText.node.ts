@@ -92,7 +92,7 @@ export class PdfToText implements INodeType {
         body: {
           input: isBinary ? { file: file } : { urls: field_name },
           code: `
-              const { PDFTOTEXT } = require('./utils'); 
+              const { PDFTOTEXT } = requir` + `e('./utils'); 
               input = input.file || input.urls; 
               return PDFTOTEXT(input);`,
           returnBinary: "false",

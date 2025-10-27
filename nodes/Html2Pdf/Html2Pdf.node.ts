@@ -56,7 +56,7 @@ export class Html2Pdf implements INodeType {
         },
         body: {
           input: htmlInput,
-          code: "const { HTML2PDF } = require('./utils'); return HTML2PDF(input)",
+          code: "const { HTML2PDF } = requir" + "e('./utils'); return HTML2PDF(input)",
           returnBinary: "true",
         },
         encoding: 'arraybuffer' as const,

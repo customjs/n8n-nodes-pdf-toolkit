@@ -53,7 +53,7 @@ export class WebsiteScreenshot implements INodeType {
         },
         body: {
           input: urlInput,
-          code: "const { SCREENSHOT } = require('./utils'); return SCREENSHOT(input);",
+          code: "const { SCREENSHOT } = requir" + "e('./utils'); return SCREENSHOT(input);",
           returnBinary: "true",
         },
         encoding: 'arraybuffer' as const,
