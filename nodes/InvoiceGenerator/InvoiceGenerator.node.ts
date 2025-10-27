@@ -241,9 +241,9 @@ export class InvoiceGenerator implements INodeType {
 			};
 
 			const code = `
-			const { HTML2PDF } = requir` + `e('./utils');
-			const nunjucks = requir` + `e('nunjucks');
-			const fetch = requir` + `e('node-fetch');
+			const { HTML2PDF } = require('./utils');
+			const nunjucks = require('nunjucks');
+			const fetch = require('node-fetch');
 			const tpl = 'https://www.customjs.space/pdf-templates/Invoice1.html';
 			const templateString = await fetch(tpl).then(r => r.text());
 			const renderedHtml = await nunjucks.renderString(

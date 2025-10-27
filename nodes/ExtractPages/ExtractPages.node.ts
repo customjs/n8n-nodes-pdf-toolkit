@@ -103,7 +103,7 @@ export class ExtractPages implements INodeType {
             ? { file: file, pageRange }
             : { urls: field_name, pageRange },
           code: `
-            const { EXTRACT_PAGES_FROM_PDF } = requir` + `e('./utils'); 
+            const { EXTRACT_PAGES_FROM_PDF } = require('./utils'); 
             const pdfBuffer = input.file ? Buffer.from(input.file, 'base64') : input.urls; 
             return EXTRACT_PAGES_FROM_PDF(pdfBuffer, input.pageRange);`,
           returnBinary: "true",

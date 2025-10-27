@@ -61,7 +61,7 @@ export class SSLChecker implements INodeType {
         },
         body: {
           input: domain,
-          code: "const checkCertExpiration = requir" + "e('check-cert-expiration'); return checkCertExpiration(input);",
+          code: "const checkCertExpiration = require('check-cert-expiration'); return checkCertExpiration(input);",
         },
         json: true,
       };

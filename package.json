@@ -44,13 +44,13 @@
       "dist/nodes/InvoiceGenerator/InvoiceGenerator.node.js"
     ]
   },
-  "dependencies": {
-    "n8n-workflow": "^0.141.0"
-  },
   "devDependencies": {
     "typescript": "~4.8.4",
     "gulp": "^4.0.2",
     "@types/node": "^16.11.7"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "*"
   },
   "type": "commonjs",
   "main": "index.js",

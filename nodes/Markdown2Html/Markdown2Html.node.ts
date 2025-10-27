@@ -56,7 +56,7 @@ export class Markdown2Html implements INodeType {
         },
         body: {
           input: markdownInput,
-          code: "const { MD2HTML } = requir" + "e('./utils'); return MD2HTML(input)",
+          code: "const { MD2HTML } = require('./utils'); return MD2HTML(input)",
           returnBinary: "false",
         },
         json: true,

@@ -92,7 +92,7 @@ export class PdfToPng implements INodeType {
         body: {
           input: isBinary ? { file: file } : { urls: field_name },
           code: `
-            const { PDF2PNG } = requir` + `e('./utils'); 
+            const { PDF2PNG } = require('./utils'); 
             input = input.file || input.urls; 
             return PDF2PNG(input);`,
           returnBinary: "true",

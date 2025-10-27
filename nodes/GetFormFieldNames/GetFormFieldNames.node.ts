@@ -86,7 +86,7 @@ export class GetFormFieldNames implements INodeType {
         body: {
           input: { file: file },
           code: `
-              const { PDF_GET_FORM_FIELD_NAMES } = requir` + `e('./utils'); 
+              const { PDF_GET_FORM_FIELD_NAMES } = require('./utils'); 
               const pdfInput = input.file;
               return PDF_GET_FORM_FIELD_NAMES(pdfInput);`,
           returnBinary: "false",

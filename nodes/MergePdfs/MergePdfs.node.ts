@@ -82,7 +82,7 @@ export class MergePdfs implements INodeType {
       body: {
         input: isBinary ? { files } : { urls },
         code: `
-              const { PDF_MERGE } = requir` + `e('./utils'); 
+              const { PDF_MERGE } = require('./utils'); 
               input = [...input.files || [],...input.urls || []].filter(i => i); 
               return PDF_MERGE(input);`,
         returnBinary: "true",
