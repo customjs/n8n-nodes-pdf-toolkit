@@ -55,7 +55,7 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "build": "tsc && gulp build:icons",
+    "build": "tsc && gulp build:icons && cp package.json dist/",
     "dev": "tsc --watch",
     "format": "prettier --write ."
   }
