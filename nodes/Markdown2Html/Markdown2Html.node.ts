@@ -52,7 +52,6 @@ export class Markdown2Html implements INodeType {
         method: 'POST' as const,
         headers: {
           "customjs-origin": "n8n/markdown2html",
-          "x-api-key": credentials.apiKey,
         },
         body: {
           input: markdownInput,
@@ -62,7 +61,7 @@ export class Markdown2Html implements INodeType {
         json: true,
       };
 
-      const response = await this.helpers.httpRequest(options);
+      const response = await this.helpers.requestWithAuthentication.call(this, 'customJsApi', options);
 
       returnData.push({
         json: {

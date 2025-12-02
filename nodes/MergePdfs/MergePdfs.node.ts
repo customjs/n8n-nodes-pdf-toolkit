@@ -77,7 +77,6 @@ export class MergePdfs implements INodeType {
       method: 'POST' as const,
       headers: {
         "customjs-origin": "n8n/mergePDFs",
-        "x-api-key": credentials.apiKey,
       },
       body: {
         input: isBinary ? { files } : { urls },
@@ -87,12 +86,11 @@ export class MergePdfs implements INodeType {
               return PDF_MERGE(input);`,
         returnBinary: "true",
       },
-      encoding: 'arraybuffer' as const,
+      encoding: null,
       json: true,
     };
 
-    const response = await this.helpers.httpRequest(options);
-
+    const response = await this.helpers.requestWithAuthentication.call(this, 'customJsApi', options);
     if (!response || (Buffer.isBuffer(response) && response.length === 0)) {
       // No binary data returned; emit only JSON without a binary property
       returnData.push({

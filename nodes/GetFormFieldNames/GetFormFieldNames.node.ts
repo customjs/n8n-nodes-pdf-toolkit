@@ -16,8 +16,8 @@ export class GetFormFieldNames implements INodeType {
     defaults: {
       name: "Get PDF Form Fields",
     },
-    inputs: ["main"],
-    outputs: ["main"],
+    inputs: ['main'],
+    outputs: ['main'],
     credentials: [
       {
         name: "customJsApi",
@@ -81,7 +81,6 @@ export class GetFormFieldNames implements INodeType {
         method: 'POST' as const,
         headers: {
           "customjs-origin": "n8n/getFormFieldNames",
-          "x-api-key": credentials.apiKey,
         },
         body: {
           input: { file: file },
@@ -94,8 +93,7 @@ export class GetFormFieldNames implements INodeType {
         json: true,
       };
 
-      const response = await this.helpers.httpRequest(options);
-
+      const response = await this.helpers.requestWithAuthentication.call(this, 'customJsApi', options);
       returnData.push({
         json: {
           output: JSON.parse(response.toString()),
