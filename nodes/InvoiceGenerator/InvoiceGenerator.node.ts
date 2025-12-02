@@ -275,6 +275,9 @@ export class InvoiceGenerator implements INodeType {
 			if (!response || (Buffer.isBuffer(response) && response.length === 0)) {
 				returnData.push({
 					json: items[i].json,
+					pairedItem: {
+						item: i,
+					},
 				});
 				continue;
 			}
@@ -287,6 +290,9 @@ export class InvoiceGenerator implements INodeType {
 				json: items[i].json,
 				binary: {
 					data: binaryData,
+				},
+				pairedItem: {
+					item: i,
 				},
 			});
 		}

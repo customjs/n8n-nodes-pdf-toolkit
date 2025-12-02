@@ -95,10 +95,13 @@ export class GetFormFieldNames implements INodeType {
       };
 
       const response = await this.helpers.httpRequest(options);
-      
+
       returnData.push({
         json: {
           output: JSON.parse(response.toString()),
+        },
+        pairedItem: {
+          item: i,
         },
       });
     }

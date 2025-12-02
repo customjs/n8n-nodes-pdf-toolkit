@@ -72,6 +72,9 @@ export class SSLChecker implements INodeType {
         json: {
           output: response,
         },
+        pairedItem: {
+          item: i,
+        },
       });
     }
 

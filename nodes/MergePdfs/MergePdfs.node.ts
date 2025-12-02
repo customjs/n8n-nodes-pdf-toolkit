@@ -92,11 +92,14 @@ export class MergePdfs implements INodeType {
     };
 
     const response = await this.helpers.httpRequest(options);
-    
+
     if (!response || (Buffer.isBuffer(response) && response.length === 0)) {
       // No binary data returned; emit only JSON without a binary property
       returnData.push({
         json: {} as IDataObject,
+        pairedItem: items.map((_, i) => ({
+          item: i,
+        })),
       });
       return [returnData];
     }
@@ -111,6 +114,9 @@ export class MergePdfs implements INodeType {
       binary: {
         data: binaryData,
       },
+      pairedItem: items.map((_, i) => ({
+        item: i,
+      })),
     });
 
     return [returnData];

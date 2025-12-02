@@ -45,7 +45,7 @@ export class PdfFormFill implements INodeType {
         description:
           "The field name for binary PDF file. Please make sure the size of PDf file doesn't exceed 6mb.",
         required: true,
-      },{
+      }, {
         displayName: "Form Fields",
         name: "fields",
         type: "fixedCollection",
@@ -116,8 +116,8 @@ export class PdfFormFill implements INodeType {
           "x-api-key": credentials.apiKey,
         },
         body: {
-          input: { 
-            file: file, 
+          input: {
+            file: file,
             // n8n fixedCollection with multipleValues returns an object like { field: [{ name, value }, ...] }
             fields: (this.getNodeParameter("fields", i) as any)?.field || []
           },
@@ -137,6 +137,9 @@ export class PdfFormFill implements INodeType {
         // No binary data returned; emit only JSON without a binary property
         returnData.push({
           json: items[i].json,
+          pairedItem: {
+            item: i,
+          },
         });
         continue;
       }
@@ -150,6 +153,9 @@ export class PdfFormFill implements INodeType {
         json: items[i].json,
         binary: {
           data: binaryData,
+        },
+        pairedItem: {
+          item: i,
         },
       });
     }

@@ -106,6 +106,9 @@ export class PdfToText implements INodeType {
         json: {
           output: response.toString(),
         },
+        pairedItem: {
+          item: i,
+        },
       });
     }
 

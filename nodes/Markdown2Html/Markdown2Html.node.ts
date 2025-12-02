@@ -68,6 +68,9 @@ export class Markdown2Html implements INodeType {
         json: {
           output: response.toString(),
         },
+        pairedItem: {
+          item: i,
+        },
       });
     }
 

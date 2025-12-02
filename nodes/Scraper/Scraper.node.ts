@@ -165,6 +165,9 @@ export class Scraper implements INodeType {
           // No binary data returned; emit only JSON without a binary property
           returnData.push({
             json: items[i].json,
+            pairedItem: {
+              item: i,
+            },
           });
           continue;
         }
@@ -177,11 +180,17 @@ export class Scraper implements INodeType {
           binary: {
             data: binaryData,
           },
+          pairedItem: {
+            item: i,
+          },
         });
       } else {
         returnData.push({
           json: {
             output: response.toString(),
+          },
+          pairedItem: {
+            item: i,
           },
         });
       }

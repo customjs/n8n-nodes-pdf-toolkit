@@ -117,6 +117,9 @@ export class ExtractPages implements INodeType {
         // No binary data returned; emit only JSON without a binary property
         returnData.push({
           json: items[i].json,
+          pairedItem: {
+            item: i,
+          },
         });
         continue;
       }
@@ -130,6 +133,9 @@ export class ExtractPages implements INodeType {
         json: items[i].json,
         binary: {
           data: binaryData,
+        },
+        pairedItem: {
+          item: i,
         },
       });
     }
