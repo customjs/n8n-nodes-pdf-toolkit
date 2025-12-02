@@ -144,7 +144,6 @@ export class Scraper implements INodeType {
         method: 'POST' as const,
         headers: {
           "customjs-origin": "n8n/scraper",
-          "x-api-key": credentials.apiKey,
         },
         body: {
           input: JSON.stringify(payload),
@@ -158,7 +157,7 @@ export class Scraper implements INodeType {
         json: true,
       };
 
-      const response = await this.helpers.httpRequest(options);
+      const response = await this.helpers.requestWithAuthentication.call(this, 'customJsApi', options);
 
       if (returnValueType === "binary") {
         if (!response || (Buffer.isBuffer(response) && response.length === 0)) {

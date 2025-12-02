@@ -52,7 +52,6 @@ export class Html2Pdf implements INodeType {
         method: 'POST' as const,
         headers: {
           "customjs-origin": "n8n/generatePDF",
-          "x-api-key": credentials.apiKey,
         },
         body: {
           input: htmlInput,
@@ -63,7 +62,7 @@ export class Html2Pdf implements INodeType {
         json: true,
       };
 
-      const response = await this.helpers.httpRequest(options);
+      const response = await this.helpers.requestWithAuthentication.call(this, 'customJsApi', options);
       if (!response || (Buffer.isBuffer(response) && response.length === 0)) {
         // No binary data returned; emit only JSON without a binary property
         returnData.push({

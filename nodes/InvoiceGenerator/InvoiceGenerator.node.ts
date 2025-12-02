@@ -252,7 +252,7 @@ export class InvoiceGenerator implements INodeType {
 				 
 				}
 			);
-			console.log('renderedHtml', renderedHtml);
+
 			return HTML2PDF(renderedHtml);
 		`;
 			const options = {
@@ -260,7 +260,6 @@ export class InvoiceGenerator implements INodeType {
 				method: 'POST' as const,
 				headers: {
 					'customjs-origin': 'n8n/invoice-generator',
-					'x-api-key': credentials.apiKey,
 				},
 				body: {
 					input: invoiceData,
@@ -271,7 +270,7 @@ export class InvoiceGenerator implements INodeType {
 				json: true,
 			};
 
-			const response = await this.helpers.httpRequest(options);
+			const response = await this.helpers.requestWithAuthentication.call(this, 'customJsApi', options);
 			if (!response || (Buffer.isBuffer(response) && response.length === 0)) {
 				returnData.push({
 					json: items[i].json,

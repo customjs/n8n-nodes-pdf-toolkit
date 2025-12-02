@@ -16,8 +16,8 @@ export class CompressPDF implements INodeType {
     defaults: {
       name: "Compress PDF file",
     },
-    inputs: ["main"],
-    outputs: ["main"],
+    inputs: ['main'],
+    outputs: ['main'],
     credentials: [
       {
         name: "customJsApi",
@@ -87,7 +87,6 @@ export class CompressPDF implements INodeType {
         method: 'POST' as const,
         headers: {
           "customjs-origin": "n8n/compressPdf",
-          "x-api-key": credentials.apiKey,
         },
         body: {
           input: isBinary ? { file: file } : { urls: field_name },
@@ -101,7 +100,7 @@ export class CompressPDF implements INodeType {
         json: true,
       };
 
-      const response = await this.helpers.httpRequest(options);
+      const response = await this.helpers.requestWithAuthentication.call(this, 'customJsApi', options);
       if (!response || (Buffer.isBuffer(response) && response.length === 0)) {
         // No binary data returned; emit only JSON without a binary property
         returnData.push({
