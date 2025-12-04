@@ -5,6 +5,7 @@ import {
   INodeType,
   INodeTypeDescription,
   NodePropertyTypes,
+  NodeOperationError,
 } from "n8n-workflow";
 
 export class MergePdfs implements INodeType {
@@ -59,59 +60,79 @@ export class MergePdfs implements INodeType {
     const items = this.getInputData();
     const returnData: INodeExecutionData[] = [];
 
-    const credentials = await this.getCredentials("customJsApi");
-    const isBinary =
-      (this.getNodeParameter("resource", 0) as string) === "binary";
-    const field_name = this.getNodeParameter("field_name", 0) as string[] | string;
+    try {
+      const credentials = await this.getCredentials("customJsApi");
+      const isBinary =
+        (this.getNodeParameter("resource", 0) as string) === "binary";
+      const field_name = this.getNodeParameter("field_name", 0) as string[] | string;
 
-    const files = isBinary ? items.map((item, i) => {
-      if (item.binary?.data) {
-        return Buffer.from(item.binary.data.data, "base64");
-      }
-    }) : [];
+      const files = isBinary ? items.map((item, i) => {
+        if (item.binary?.data) {
+          return Buffer.from(item.binary.data.data, "base64");
+        }
+      }) : [];
 
-    const urls = !isBinary ? field_name : [];
+      const urls = !isBinary ? field_name : [];
 
-    const options = {
-      url: `https://e.customjs.io/__js1-${credentials.apiKey}`,
-      method: 'POST' as const,
-      headers: {
-        "customjs-origin": "n8n/mergePDFs",
-        "x-api-key": credentials.apiKey,
-      },
-      body: {
-        input: isBinary ? { files } : { urls },
-        code: `
+      const options = {
+        url: `https://e.customjs.io/__js1-${credentials.apiKey}`,
+        method: 'POST' as const,
+        headers: {
+          "customjs-origin": "n8n/mergePDFs",
+        },
+        body: {
+          input: isBinary ? { files } : { urls },
+          code: `
               const { PDF_MERGE } = require('./utils'); 
               input = [...input.files || [],...input.urls || []].filter(i => i); 
               return PDF_MERGE(input);`,
-        returnBinary: "true",
-      },
-      encoding: 'arraybuffer' as const,
-      json: true,
-    };
+          returnBinary: "true",
+        },
+        encoding: null,
+        json: true,
+      };
 
-    const response = await this.helpers.httpRequest(options);
-    
-    if (!response || (Buffer.isBuffer(response) && response.length === 0)) {
-      // No binary data returned; emit only JSON without a binary property
+      const response = await this.helpers.requestWithAuthentication.call(this, 'customJsApi', options);
+      if (!response || (Buffer.isBuffer(response) && response.length === 0)) {
+        // No binary data returned; emit only JSON without a binary property
+        returnData.push({
+          json: {} as IDataObject,
+          pairedItem: items.map((_, i) => ({
+            item: i,
+          })),
+        });
+        return [returnData];
+      }
+
+      const binaryData = await this.helpers.prepareBinaryData(
+        response,
+        "output.pdf"
+      );
+
       returnData.push({
         json: {} as IDataObject,
+        binary: {
+          data: binaryData,
+        },
+        pairedItem: items.map((_, i) => ({
+          item: i,
+        })),
       });
-      return [returnData];
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      if (this.continueOnFail()) {
+        returnData.push({
+          json: {
+            error: errorMessage,
+          } as IDataObject,
+          pairedItem: items.map((_, i) => ({
+            item: i,
+          })),
+        });
+        return [returnData];
+      }
+      throw new NodeOperationError(this.getNode(), error as Error);
     }
-
-    const binaryData = await this.helpers.prepareBinaryData(
-      response,
-      "output.pdf"
-    );
-
-    returnData.push({
-      json: {} as IDataObject,
-      binary: {
-        data: binaryData,
-      },
-    });
 
     return [returnData];
   }

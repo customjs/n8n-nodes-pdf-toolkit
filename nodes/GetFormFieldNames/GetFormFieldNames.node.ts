@@ -3,6 +3,7 @@ import {
   INodeExecutionData,
   INodeType,
   INodeTypeDescription,
+  NodeOperationError,
 } from "n8n-workflow";
 
 export class GetFormFieldNames implements INodeType {
@@ -16,8 +17,8 @@ export class GetFormFieldNames implements INodeType {
     defaults: {
       name: "Get PDF Form Fields",
     },
-    inputs: ["main"],
-    outputs: ["main"],
+    inputs: ['main'],
+    outputs: ['main'],
     credentials: [
       {
         name: "customJsApi",
@@ -64,43 +65,60 @@ export class GetFormFieldNames implements INodeType {
     };
 
     for (let i = 0; i < items.length; i++) {
-      const credentials = await this.getCredentials("customJsApi");
-      const field_name = this.getNodeParameter("field_name", i) as string;
-      const isBinary =
-        (this.getNodeParameter("resource", i) as string) === "binary";
-      const file = isBinary ? getFile(field_name, i) : "";
+      try {
+        const credentials = await this.getCredentials("customJsApi");
+        const field_name = this.getNodeParameter("field_name", i) as string;
+        const isBinary =
+          (this.getNodeParameter("resource", i) as string) === "binary";
+        const file = isBinary ? getFile(field_name, i) : "";
 
-      if (
-        !isBinary
-      ) {
-        throw new Error(`Invalid binary data`);
-      }
+        if (
+          !isBinary
+        ) {
+          throw new Error(`Invalid binary data`);
+        }
 
-      const options = {
-        url: `https://e.customjs.io/__js1-${credentials.apiKey}`,
-        method: 'POST' as const,
-        headers: {
-          "customjs-origin": "n8n/getFormFieldNames",
-          "x-api-key": credentials.apiKey,
-        },
-        body: {
-          input: { file: file },
-          code: `
+        const options = {
+          url: `https://e.customjs.io/__js1-${credentials.apiKey}`,
+          method: 'POST' as const,
+          headers: {
+            "customjs-origin": "n8n/getFormFieldNames",
+          },
+          body: {
+            input: { file: file },
+            code: `
               const { PDF_GET_FORM_FIELD_NAMES } = require('./utils'); 
               const pdfInput = input.file;
               return PDF_GET_FORM_FIELD_NAMES(pdfInput);`,
-          returnBinary: "false",
-        },
-        json: true,
-      };
+            returnBinary: "false",
+          },
+          json: true,
+        };
 
-      const response = await this.helpers.httpRequest(options);
-      
-      returnData.push({
-        json: {
-          output: JSON.parse(response.toString()),
-        },
-      });
+        const response = await this.helpers.requestWithAuthentication.call(this, 'customJsApi', options);
+        returnData.push({
+          json: {
+            output: JSON.parse(response.toString()),
+          },
+          pairedItem: {
+            item: i,
+          },
+        });
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        if (this.continueOnFail()) {
+          returnData.push({
+            json: {
+              error: errorMessage,
+            },
+            pairedItem: {
+              item: i,
+            },
+          });
+          continue;
+        }
+        throw new NodeOperationError(this.getNode(), error as Error, { itemIndex: i });
+      }
     }
 
     return [returnData];

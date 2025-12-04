@@ -3,6 +3,7 @@ import {
   INodeExecutionData,
   INodeType,
   INodeTypeDescription,
+  NodeOperationError,
 } from "n8n-workflow";
 
 export class WebsiteScreenshot implements INodeType {
@@ -41,45 +42,66 @@ export class WebsiteScreenshot implements INodeType {
     const returnData: INodeExecutionData[] = [];
 
     for (let i = 0; i < items.length; i++) {
-      const credentials = await this.getCredentials("customJsApi");
-      const urlInput = this.getNodeParameter("urlInput", i) as string;
+      try {
+        const credentials = await this.getCredentials("customJsApi");
+        const urlInput = this.getNodeParameter("urlInput", i) as string;
 
-      const options = {
-        url: `https://e.customjs.io/__js1-${credentials.apiKey}`,
-        method: 'POST' as const,
-        headers: {
-          "customjs-origin": "n8n/screenshot",
-          "x-api-key": credentials.apiKey,
-        },
-        body: {
-          input: urlInput,
-          code: "const { SCREENSHOT } = require('./utils'); return SCREENSHOT(input);",
-          returnBinary: "true",
-        },
-        encoding: 'arraybuffer' as const,
-        json: true,
-      };
+        const options = {
+          url: `https://e.customjs.io/__js1-${credentials.apiKey}`,
+          method: 'POST' as const,
+          headers: {
+            "customjs-origin": "n8n/screenshot",
+          },
+          body: {
+            input: urlInput,
+            code: "const { SCREENSHOT } = require('./utils'); return SCREENSHOT(input);",
+            returnBinary: "true",
+          },
+          encoding: null,
+          json: true,
+        };
 
-      const response = await this.helpers.httpRequest(options);
-      if (!response || (Buffer.isBuffer(response) && response.length === 0)) {
-        // No binary data returned; emit only JSON without a binary property
+        const response = await this.helpers.requestWithAuthentication.call(this, 'customJsApi', options);
+        if (!response || (Buffer.isBuffer(response) && response.length === 0)) {
+          // No binary data returned; emit only JSON without a binary property
+          returnData.push({
+            json: items[i].json,
+            pairedItem: {
+              item: i,
+            },
+          });
+          continue;
+        }
+
+        const binaryData = await this.helpers.prepareBinaryData(
+          response,
+          "output.png"
+        );
+
         returnData.push({
           json: items[i].json,
+          binary: {
+            data: binaryData,
+          },
+          pairedItem: {
+            item: i,
+          },
         });
-        continue;
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        if (this.continueOnFail()) {
+          returnData.push({
+            json: {
+              error: errorMessage,
+            },
+            pairedItem: {
+              item: i,
+            },
+          });
+          continue;
+        }
+        throw new NodeOperationError(this.getNode(), error as Error, { itemIndex: i });
       }
-
-      const binaryData = await this.helpers.prepareBinaryData(
-        response,
-        "output.png"
-      );
-
-      returnData.push({
-        json: items[i].json,
-        binary: {
-          data: binaryData,
-        },
-      });
     }
 
     return [returnData];

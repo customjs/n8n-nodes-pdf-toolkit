@@ -5,6 +5,7 @@ import {
 	INodeTypeDescription,
 	IDataObject,
 	IBinaryData,
+	NodeOperationError,
 } from 'n8n-workflow';
 
 export class InvoiceGenerator implements INodeType {
@@ -193,54 +194,55 @@ export class InvoiceGenerator implements INodeType {
 		const returnData: INodeExecutionData[] = [];
 
 		for (let i = 0; i < items.length; i++) {
-			const credentials = await this.getCredentials('customJsApi');
-			const pdfTemplate = this.getNodeParameter('pdfTemplate', i) as string;
-			const issuer = this.getNodeParameter('issuer.issuerValues', i) as IDataObject;
-			const payment = this.getNodeParameter('payment.paymentValues', i) as IDataObject;
-			const recipient = this.getNodeParameter('recipient.recipientValues', i) as IDataObject;
-			const billing = this.getNodeParameter('billing.billingValues', i) as IDataObject;
-			const itemsMode = this.getNodeParameter('itemsMode', i) as string;
-			let invoiceItems: IDataObject[];
+			try { // Added try block
+				const credentials = await this.getCredentials('customJsApi');
+				const pdfTemplate = this.getNodeParameter('pdfTemplate', i) as string;
+				const issuer = this.getNodeParameter('issuer.issuerValues', i) as IDataObject;
+				const payment = this.getNodeParameter('payment.paymentValues', i) as IDataObject;
+				const recipient = this.getNodeParameter('recipient.recipientValues', i) as IDataObject;
+				const billing = this.getNodeParameter('billing.billingValues', i) as IDataObject;
+				const itemsMode = this.getNodeParameter('itemsMode', i) as string;
+				let invoiceItems: IDataObject[];
 
-			if (itemsMode === 'json') {
-				const itemsJson = this.getNodeParameter('itemsJson', i);
+				if (itemsMode === 'json') {
+					const itemsJson = this.getNodeParameter('itemsJson', i);
 
-				if (typeof itemsJson === 'string') {
-					try {
-						invoiceItems = JSON.parse(itemsJson);
-					} catch (error) {
-						if (error instanceof Error) {
-							throw new Error(`Invalid JSON in 'Items JSON' field: ${error.message}`);
+					if (typeof itemsJson === 'string') {
+						try {
+							invoiceItems = JSON.parse(itemsJson);
+						} catch (error) {
+							if (error instanceof Error) {
+								throw new Error(`Invalid JSON in 'Items JSON' field: ${error.message}`);
+							}
+							throw new Error(`Invalid JSON in 'Items JSON' field: ${String(error)}`);
 						}
-						throw new Error(`Invalid JSON in 'Items JSON' field: ${String(error)}`);
+					} else if (Array.isArray(itemsJson)) {
+						invoiceItems = itemsJson as IDataObject[];
+					} else {
+						invoiceItems = [];
 					}
-				} else if (Array.isArray(itemsJson)) {
-					invoiceItems = itemsJson as IDataObject[];
 				} else {
-					invoiceItems = [];
+					const itemsData = this.getNodeParameter('items', i) as { itemsValues: IDataObject[] };
+					invoiceItems = itemsData.itemsValues;
 				}
-			} else {
-				const itemsData = this.getNodeParameter('items', i) as { itemsValues: IDataObject[] };
-				invoiceItems = itemsData.itemsValues;
-			}
 
-			invoiceItems = invoiceItems.map(item => {
-				return {
-					description: item.description,
-					quantity: Number(item.quantity),
-					unitPrice: Number(item.unitPrice),
+				invoiceItems = invoiceItems.map(item => {
+					return {
+						description: item.description,
+						quantity: Number(item.quantity),
+						unitPrice: Number(item.unitPrice),
+					};
+				});
+
+				const invoiceData = {
+					issuer,
+					payment,
+					recipient,
+					billing,
+					items: invoiceItems,
 				};
-			});
 
-			const invoiceData = {
-				issuer,
-				payment,
-				recipient,
-				billing,
-				items: invoiceItems,
-			};
-
-			const code = `
+				const code = `
 			const { HTML2PDF } = require('./utils');
 			const nunjucks = require('nunjucks');
 			const fetch = require('node-fetch');
@@ -252,43 +254,63 @@ export class InvoiceGenerator implements INodeType {
 				 
 				}
 			);
-			console.log('renderedHtml', renderedHtml);
+
 			return HTML2PDF(renderedHtml);
 		`;
-			const options = {
-				url: `https://e.customjs.io/__js1-${credentials.apiKey}`,
-				method: 'POST' as const,
-				headers: {
-					'customjs-origin': 'n8n/invoice-generator',
-					'x-api-key': credentials.apiKey,
-				},
-				body: {
-					input: invoiceData,
-					code: code,
-					returnBinary: 'true',
-				},
-				encoding: 'arraybuffer' as const,
-				json: true,
-			};
+				const options = {
+					url: `https://e.customjs.io/__js1-${credentials.apiKey}`,
+					method: 'POST' as const,
+					headers: {
+						'customjs-origin': 'n8n/invoice-generator',
+					},
+					body: {
+						input: invoiceData,
+						code: code,
+						returnBinary: 'true',
+					},
+					encoding: null,
+					json: true,
+				};
 
-			const response = await this.helpers.httpRequest(options);
-			if (!response || (Buffer.isBuffer(response) && response.length === 0)) {
+				const response = await this.helpers.requestWithAuthentication.call(this, 'customJsApi', options);
+				if (!response || (Buffer.isBuffer(response) && response.length === 0)) {
+					returnData.push({
+						json: items[i].json,
+						pairedItem: {
+							item: i,
+						},
+					});
+					continue;
+				}
+
+				const binaryData = await this.helpers.prepareBinaryData(
+					response,
+					"Invoice.pdf"
+				);
 				returnData.push({
 					json: items[i].json,
+					binary: {
+						data: binaryData,
+					},
+					pairedItem: {
+						item: i,
+					},
 				});
-				continue;
+			} catch (error) { // Added catch block
+				const errorMessage = error instanceof Error ? error.message : String(error);
+				if (this.continueOnFail()) {
+					returnData.push({
+						json: {
+							error: errorMessage,
+						},
+						pairedItem: {
+							item: i,
+						},
+					});
+					continue;
+				}
+				throw new NodeOperationError(this.getNode(), error as Error, { itemIndex: i });
 			}
-
-			const binaryData = await this.helpers.prepareBinaryData(
-				response,
-				"Invoice.pdf"
-			);
-			returnData.push({
-				json: items[i].json,
-				binary: {
-					data: binaryData,
-				},
-			});
 		}
 
 		return [returnData];

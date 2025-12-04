@@ -3,6 +3,7 @@ import {
   INodeExecutionData,
   INodeType,
   INodeTypeDescription,
+  NodeOperationError,
 } from "n8n-workflow";
 
 export class PdfFormFill implements INodeType {
@@ -45,7 +46,7 @@ export class PdfFormFill implements INodeType {
         description:
           "The field name for binary PDF file. Please make sure the size of PDf file doesn't exceed 6mb.",
         required: true,
-      },{
+      }, {
         displayName: "Form Fields",
         name: "fields",
         type: "fixedCollection",
@@ -96,62 +97,83 @@ export class PdfFormFill implements INodeType {
     };
 
     for (let i = 0; i < items.length; i++) {
-      const credentials = await this.getCredentials("customJsApi");
-      const field_name = this.getNodeParameter("field_name", i) as string;
-      const isBinary =
-        (this.getNodeParameter("resource", i) as string) === "binary";
-      const file = isBinary ? getFile(field_name, i) : "";
+      try {
+        const credentials = await this.getCredentials("customJsApi");
+        const field_name = this.getNodeParameter("field_name", i) as string;
+        const isBinary =
+          (this.getNodeParameter("resource", i) as string) === "binary";
+        const file = isBinary ? getFile(field_name, i) : "";
 
-      if (
-        !isBinary
-      ) {
-        throw new Error(`Invalid binary data`);
-      }
+        if (
+          !isBinary
+        ) {
+          throw new Error(`Invalid binary data`);
+        }
 
-      const options = {
-        url: `https://e.customjs.io/__js1-${credentials.apiKey}`,
-        method: 'POST' as const,
-        headers: {
-          "customjs-origin": "n8n/pdfFormFill",
-          "x-api-key": credentials.apiKey,
-        },
-        body: {
-          input: { 
-            file: file, 
-            // n8n fixedCollection with multipleValues returns an object like { field: [{ name, value }, ...] }
-            fields: (this.getNodeParameter("fields", i) as any)?.field || []
+        const options = {
+          url: `https://e.customjs.io/__js1-${credentials.apiKey}`,
+          method: 'POST' as const,
+          headers: {
+            "customjs-origin": "n8n/pdfFormFill",
           },
-          code: `
+          body: {
+            input: {
+              file: file,
+              // n8n fixedCollection with multipleValues returns an object like { field: [{ name, value }, ...] }
+              fields: (this.getNodeParameter("fields", i) as any)?.field || []
+            },
+            code: `
               const { PDF_FILL_FORM } = require('./utils'); 
               const pdfInput = input.file;
               const fieldValues = Object.fromEntries((input.fields || []).map(x => [x.name, x.value]));
               return PDF_FILL_FORM(pdfInput, fieldValues);`,
-          returnBinary: "true",
-        },
-        encoding: 'arraybuffer' as const,
-        json: true,
-      };
+            returnBinary: "true",
+          },
+          encoding: null,
+          json: true,
+        };
 
-      const response = await this.helpers.httpRequest(options);
-      if (!response || (Buffer.isBuffer(response) && response.length === 0)) {
-        // No binary data returned; emit only JSON without a binary property
+        const response = await this.helpers.requestWithAuthentication.call(this, 'customJsApi', options);
+        if (!response || (Buffer.isBuffer(response) && response.length === 0)) {
+          // No binary data returned; emit only JSON without a binary property
+          returnData.push({
+            json: items[i].json,
+            pairedItem: {
+              item: i,
+            },
+          });
+          continue;
+        }
+
+        const binaryData = await this.helpers.prepareBinaryData(
+          response,
+          "document.pdf"
+        );
+
         returnData.push({
           json: items[i].json,
+          binary: {
+            data: binaryData,
+          },
+          pairedItem: {
+            item: i,
+          },
         });
-        continue;
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        if (this.continueOnFail()) {
+          returnData.push({
+            json: {
+              error: errorMessage,
+            },
+            pairedItem: {
+              item: i,
+            },
+          });
+          continue;
+        }
+        throw new NodeOperationError(this.getNode(), error as Error, { itemIndex: i });
       }
-
-      const binaryData = await this.helpers.prepareBinaryData(
-        response,
-        "document.pdf"
-      );
-
-      returnData.push({
-        json: items[i].json,
-        binary: {
-          data: binaryData,
-        },
-      });
     }
 
     return [returnData];

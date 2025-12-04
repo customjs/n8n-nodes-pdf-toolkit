@@ -3,6 +3,7 @@ import {
   INodeExecutionData,
   INodeType,
   INodeTypeDescription,
+  NodeOperationError,
 } from "n8n-workflow";
 
 export class Markdown2Html implements INodeType {
@@ -44,31 +45,49 @@ export class Markdown2Html implements INodeType {
     const returnData: INodeExecutionData[] = [];
 
     for (let i = 0; i < items.length; i++) {
-      const credentials = await this.getCredentials("customJsApi");
-      const markdownInput = this.getNodeParameter("markdownInput", i) as string;
+      try {
+        const credentials = await this.getCredentials("customJsApi");
+        const markdownInput = this.getNodeParameter("markdownInput", i) as string;
 
-      const options = {
-        url: `https://e.customjs.io/__js1-${credentials.apiKey}`,
-        method: 'POST' as const,
-        headers: {
-          "customjs-origin": "n8n/markdown2html",
-          "x-api-key": credentials.apiKey,
-        },
-        body: {
-          input: markdownInput,
-          code: "const { MD2HTML } = require('./utils'); return MD2HTML(input)",
-          returnBinary: "false",
-        },
-        json: true,
-      };
+        const options = {
+          url: `https://e.customjs.io/__js1-${credentials.apiKey}`,
+          method: 'POST' as const,
+          headers: {
+            "customjs-origin": "n8n/markdown2html",
+          },
+          body: {
+            input: markdownInput,
+            code: "const { MD2HTML } = require('./utils'); return MD2HTML(input)",
+            returnBinary: "false",
+          },
+          json: true,
+        };
 
-      const response = await this.helpers.httpRequest(options);
+        const response = await this.helpers.requestWithAuthentication.call(this, 'customJsApi', options);
 
-      returnData.push({
-        json: {
-          output: response.toString(),
-        },
-      });
+        returnData.push({
+          json: {
+            output: response.toString(),
+          },
+          pairedItem: {
+            item: i,
+          },
+        });
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        if (this.continueOnFail()) {
+          returnData.push({
+            json: {
+              error: errorMessage,
+            },
+            pairedItem: {
+              item: i,
+            },
+          });
+          continue;
+        }
+        throw new NodeOperationError(this.getNode(), error as Error, { itemIndex: i });
+      }
     }
 
     return [returnData];
