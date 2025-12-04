@@ -19,6 +19,9 @@ services:
     volumes:
       - n8n_data:/home/node/.n8n
       - ./dist:/home/node/.n8n/custom/node_modules/@custom-js/n8n-nodes-pdf-toolkit
+      - ./testWorkflows:/tmp/workflows:ro
+      - ./docker-entrypoint.sh:/docker-entrypoint.sh:ro
+    entrypoint: ["/bin/sh", "/docker-entrypoint.sh"]
 
 volumes:
   n8n_data:
