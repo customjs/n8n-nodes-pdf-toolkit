@@ -3,7 +3,7 @@
   "nodes": [
     {
       "parameters": {},
-      "type": "@custom-js/n8n-nodes-pdf-toolkit.PdfToText",
+      "type": "CUSTOM.PdfToText",
       "typeVersion": 1,
       "position": [
         0,
@@ -22,7 +22,7 @@
       "parameters": {
         "htmlInput": "<h1>Hello World</h1>"
       },
-      "type": "@custom-js/n8n-nodes-pdf-toolkit.html2Pdf",
+      "type": "CUSTOM.html2Pdf",
       "typeVersion": 1,
       "position": [
         -340,
@@ -50,7 +50,7 @@
     },
     {
       "parameters": {},
-      "type": "@custom-js/n8n-nodes-pdf-toolkit.PdfToPng",
+      "type": "CUSTOM.PdfToPng",
       "typeVersion": 1,
       "position": [
         0,
@@ -67,7 +67,7 @@
     },
     {
       "parameters": {},
-      "type": "@custom-js/n8n-nodes-pdf-toolkit.ExtractPages",
+      "type": "CUSTOM.ExtractPages",
       "typeVersion": 1,
       "position": [
         0,
@@ -84,7 +84,7 @@
     },
     {
       "parameters": {},
-      "type": "@custom-js/n8n-nodes-pdf-toolkit.CompressPDF",
+      "type": "CUSTOM.CompressPDF",
       "typeVersion": 1,
       "position": [
         0,
@@ -104,7 +104,7 @@
         "resource": "url",
         "field_name": "={{ $json.path }}"
       },
-      "type": "@custom-js/n8n-nodes-pdf-toolkit.PdfToText",
+      "type": "CUSTOM.PdfToText",
       "typeVersion": 1,
       "position": [
         0,
@@ -124,7 +124,7 @@
         "resource": "url",
         "field_name": "={{ $json.path }}"
       },
-      "type": "@custom-js/n8n-nodes-pdf-toolkit.PdfToPng",
+      "type": "CUSTOM.PdfToPng",
       "typeVersion": 1,
       "position": [
         0,
@@ -144,7 +144,7 @@
         "resource": "url",
         "field_name": "={{ $json.path }}"
       },
-      "type": "@custom-js/n8n-nodes-pdf-toolkit.ExtractPages",
+      "type": "CUSTOM.ExtractPages",
       "typeVersion": 1,
       "position": [
         0,
@@ -164,7 +164,7 @@
         "resource": "url",
         "field_name": "={{ $json.path }}"
       },
-      "type": "@custom-js/n8n-nodes-pdf-toolkit.CompressPDF",
+      "type": "CUSTOM.CompressPDF",
       "typeVersion": 1,
       "position": [
         0,
@@ -196,7 +196,7 @@
       "parameters": {
         "urlInput": "https://www.google.de"
       },
-      "type": "@custom-js/n8n-nodes-pdf-toolkit.websiteScreenshot",
+      "type": "CUSTOM.websiteScreenshot",
       "typeVersion": 1,
       "position": [
         0,
@@ -213,7 +213,7 @@
     },
     {
       "parameters": {},
-      "type": "@custom-js/n8n-nodes-pdf-toolkit.mergePdfs",
+      "type": "CUSTOM.mergePdfs",
       "typeVersion": 1,
       "position": [
         640,
@@ -257,7 +257,7 @@
         "resource": "url",
         "field_name": "={{ $json.paths }}"
       },
-      "type": "@custom-js/n8n-nodes-pdf-toolkit.mergePdfs",
+      "type": "CUSTOM.mergePdfs",
       "typeVersion": 1,
       "position": [
         0,
