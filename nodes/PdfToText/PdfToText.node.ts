@@ -3,6 +3,7 @@ import {
   INodeExecutionData,
   INodeType,
   INodeTypeDescription,
+  NodeOperationError,
 } from "n8n-workflow";
 
 export class PdfToText implements INodeType {
@@ -68,47 +69,63 @@ export class PdfToText implements INodeType {
     };
 
     for (let i = 0; i < items.length; i++) {
-      const credentials = await this.getCredentials("customJsApi");
-      const field_name = this.getNodeParameter("field_name", i) as string;
-      const isBinary =
-        (this.getNodeParameter("resource", i) as string) === "binary";
-      const file = isBinary ? getFile(field_name, i) : "";
+      try {
+        const credentials = await this.getCredentials("customJsApi");
+        const field_name = this.getNodeParameter("field_name", i) as string;
+        const isBinary =
+          (this.getNodeParameter("resource", i) as string) === "binary";
+        const file = isBinary ? getFile(field_name, i) : "";
 
-      if (
-        !isBinary &&
-        !field_name.startsWith("http://") &&
-        !field_name.startsWith("https://")
-      ) {
-        throw new Error(`Invalid URL: ${field_name}`);
-      }
+        if (
+          !isBinary &&
+          !field_name.startsWith("http://") &&
+          !field_name.startsWith("https://")
+        ) {
+          throw new Error(`Invalid URL: ${field_name}`);
+        }
 
-      const options = {
-        url: `https://e.customjs.io/__js1-${credentials.apiKey}`,
-        method: 'POST' as const,
-        headers: {
-          "customjs-origin": "n8n/pdfToText",
-        },
-        body: {
-          input: isBinary ? { file: file } : { urls: field_name },
-          code: `
+        const options = {
+          url: `https://e.customjs.io/__js1-${credentials.apiKey}`,
+          method: 'POST' as const,
+          headers: {
+            "customjs-origin": "n8n/pdfToText",
+          },
+          body: {
+            input: isBinary ? { file: file } : { urls: field_name },
+            code: `
               const { PDFTOTEXT } = require('./utils'); 
               input = input.file || input.urls; 
               return PDFTOTEXT(input);`,
-          returnBinary: "false",
-        },
-        json: true,
-      };
+            returnBinary: "false",
+          },
+          json: true,
+        };
 
-      const response = await this.helpers.requestWithAuthentication.call(this, 'customJsApi', options);
+        const response = await this.helpers.requestWithAuthentication.call(this, 'customJsApi', options);
 
-      returnData.push({
-        json: {
-          output: response.toString(),
-        },
-        pairedItem: {
-          item: i,
-        },
-      });
+        returnData.push({
+          json: {
+            output: response.toString(),
+          },
+          pairedItem: {
+            item: i,
+          },
+        });
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        if (this.continueOnFail()) {
+          returnData.push({
+            json: {
+              error: errorMessage,
+            },
+            pairedItem: {
+              item: i,
+            },
+          });
+          continue;
+        }
+        throw new NodeOperationError(this.getNode(), error as Error, { itemIndex: i });
+      }
     }
 
     return [returnData];

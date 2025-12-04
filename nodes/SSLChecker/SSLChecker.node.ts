@@ -3,6 +3,7 @@ import {
   INodeExecutionData,
   INodeType,
   INodeTypeDescription,
+  NodeOperationError,
 } from "n8n-workflow";
 
 export class SSLChecker implements INodeType {
@@ -49,32 +50,48 @@ export class SSLChecker implements INodeType {
     const returnData: INodeExecutionData[] = [];
 
     for (let i = 0; i < items.length; i++) {
-      const credentials = await this.getCredentials("customJsApi");
-      const domain = this.getNodeParameter("domain", i) as string;
+      try {
+        const credentials = await this.getCredentials("customJsApi");
+        const domain = this.getNodeParameter("domain", i) as string;
 
-      const options = {
-        url: `https://e.customjs.io/__js1-${credentials.apiKey}`,
-        method: 'POST' as const,
-        headers: {
-          "customjs-origin": "n8n/sslchecker",
-        },
-        body: {
-          input: domain,
-          code: "const checkCertExpiration = require('check-cert-expiration'); return checkCertExpiration(input);",
-        },
-        json: true,
-      };
+        const options = {
+          url: `https://e.customjs.io/__js1-${credentials.apiKey}`,
+          method: 'POST' as const,
+          headers: {
+            "customjs-origin": "n8n/sslchecker",
+          },
+          body: {
+            input: domain,
+            code: "const checkCertExpiration = require('check-cert-expiration'); return checkCertExpiration(input);",
+          },
+          json: true,
+        };
 
-      const response = await this.helpers.requestWithAuthentication.call(this, 'customJsApi', options);
+        const response = await this.helpers.requestWithAuthentication.call(this, 'customJsApi', options);
 
-      returnData.push({
-        json: {
-          output: response,
-        },
-        pairedItem: {
-          item: i,
-        },
-      });
+        returnData.push({
+          json: {
+            output: response,
+          },
+          pairedItem: {
+            item: i,
+          },
+        });
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        if (this.continueOnFail()) {
+          returnData.push({
+            json: {
+              error: errorMessage,
+            },
+            pairedItem: {
+              item: i,
+            },
+          });
+          continue;
+        }
+        throw new NodeOperationError(this.getNode(), error as Error, { itemIndex: i });
+      }
     }
 
     return [returnData];

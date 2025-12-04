@@ -3,6 +3,7 @@ import {
   INodeExecutionData,
   INodeType,
   INodeTypeDescription,
+  NodeOperationError,
 } from "n8n-workflow";
 
 export class CompressPDF implements INodeType {
@@ -68,64 +69,80 @@ export class CompressPDF implements INodeType {
     };
 
     for (let i = 0; i < items.length; i++) {
-      const credentials = await this.getCredentials("customJsApi");
-      const field_name = this.getNodeParameter("field_name", i) as string;
-      const isBinary =
-        (this.getNodeParameter("resource", i) as string) === "binary";
-      const file = isBinary ? getFile(field_name, i) : "";
+      try {
+        const credentials = await this.getCredentials("customJsApi");
+        const field_name = this.getNodeParameter("field_name", i) as string;
+        const isBinary =
+          (this.getNodeParameter("resource", i) as string) === "binary";
+        const file = isBinary ? getFile(field_name, i) : "";
 
-      if (
-        !isBinary &&
-        !field_name.startsWith("http://") &&
-        !field_name.startsWith("https://")
-      ) {
-        throw new Error(`Invalid URL: ${field_name}`);
-      }
+        if (
+          !isBinary &&
+          !field_name.startsWith("http://") &&
+          !field_name.startsWith("https://")
+        ) {
+          throw new Error(`Invalid URL: ${field_name}`);
+        }
 
-      const options = {
-        url: `https://e.customjs.io/__js1-${credentials.apiKey}`,
-        method: 'POST' as const,
-        headers: {
-          "customjs-origin": "n8n/compressPdf",
-        },
-        body: {
-          input: isBinary ? { file: file } : { urls: field_name },
-          code: `
-              const { PDF_COMPRESS } = require('./utils'); 
-              input = input.file || input.urls; 
-              return PDF_COMPRESS(input);`,
-          returnBinary: "true",
-        },
-        encoding: null,
-        json: true,
-      };
+        const options = {
+          url: `https://e.customjs.io/__js1-${credentials.apiKey}`,
+          method: 'POST' as const,
+          headers: {
+            "customjs-origin": "n8n/compressPdf",
+          },
+          body: {
+            input: isBinary ? { file: file } : { urls: field_name },
+            code: `
+                const { PDF_COMPRESS } = require('./utils'); 
+                input = input.file || input.urls; 
+                return PDF_COMPRESS(input);`,
+            returnBinary: "true",
+          },
+          encoding: null,
+          json: true,
+        };
 
-      const response = await this.helpers.requestWithAuthentication.call(this, 'customJsApi', options);
-      if (!response || (Buffer.isBuffer(response) && response.length === 0)) {
-        // No binary data returned; emit only JSON without a binary property
+        const response = await this.helpers.requestWithAuthentication.call(this, 'customJsApi', options);
+        if (!response || (Buffer.isBuffer(response) && response.length === 0)) {
+          // No binary data returned; emit only JSON without a binary property
+          returnData.push({
+            json: items[i].json,
+            pairedItem: {
+              item: i,
+            },
+          });
+          continue;
+        }
+
+        const binaryData = await this.helpers.prepareBinaryData(
+          response,
+          "output.pdf"
+        );
+
         returnData.push({
           json: items[i].json,
+          binary: {
+            data: binaryData,
+          },
           pairedItem: {
             item: i,
           },
         });
-        continue;
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        if (this.continueOnFail()) {
+          returnData.push({
+            json: {
+              error: errorMessage,
+            },
+            pairedItem: {
+              item: i,
+            },
+          });
+          continue;
+        }
+        throw new NodeOperationError(this.getNode(), error as Error, { itemIndex: i });
       }
-
-      const binaryData = await this.helpers.prepareBinaryData(
-        response,
-        "output.pdf"
-      );
-
-      returnData.push({
-        json: items[i].json,
-        binary: {
-          data: binaryData,
-        },
-        pairedItem: {
-          item: i,
-        },
-      });
     }
 
     return [returnData];

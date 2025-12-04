@@ -3,6 +3,7 @@ import {
   INodeExecutionData,
   INodeType,
   INodeTypeDescription,
+  NodeOperationError,
 } from "n8n-workflow";
 
 export class Scraper implements INodeType {
@@ -121,77 +122,93 @@ export class Scraper implements INodeType {
     const returnData: INodeExecutionData[] = [];
 
     for (let i = 0; i < items.length; i++) {
-      const credentials = await this.getCredentials("customJsApi");
-      const url = this.getNodeParameter("url", i) as string;
-      if (!url.startsWith("https://")) {
-        throw new Error("Website URL must start with https://");
-      }
-      const commandsRaw = this.getNodeParameter("commands", i, []) as any;
-      const returnValueType = this.getNodeParameter("returnValueType", i) as string;
-      const debug = this.getNodeParameter("debug", i) as boolean;
+      try {
+        const credentials = await this.getCredentials("customJsApi");
+        const url = this.getNodeParameter("url", i) as string;
+        if (!url.startsWith("https://")) {
+          throw new Error("Website URL must start with https://");
+        }
+        const commandsRaw = this.getNodeParameter("commands", i, []) as any;
+        const returnValueType = this.getNodeParameter("returnValueType", i) as string;
+        const debug = this.getNodeParameter("debug", i) as boolean;
 
-      // Flatten commands array
-      const commands =
-        Array.isArray(commandsRaw.command) ? commandsRaw.command : [];
+        // Flatten commands array
+        const commands =
+          Array.isArray(commandsRaw.command) ? commandsRaw.command : [];
 
-      const payload = {
-        url,
-        commands,
-      };
+        const payload = {
+          url,
+          commands,
+        };
 
-      const options = {
-        url: `https://e.customjs.io/__js1-${credentials.apiKey}`,
-        method: 'POST' as const,
-        headers: {
-          "customjs-origin": "n8n/scraper",
-        },
-        body: {
-          input: JSON.stringify(payload),
-          code:
-            `const { SCRAPER } = require('./utils'); ` +
-            `const payload = input; ` +
-            `return SCRAPER(payload.url, payload.commands || [], "${returnValueType === "binary" ? "image" : "html"}", ${debug ? "true" : "false"});`,
-          returnBinary: returnValueType === "binary" ? "true" : "false",
-        },
-        encoding: returnValueType === "binary" ? null : undefined,
-        json: true,
-      };
+        const options = {
+          url: `https://e.customjs.io/__js1-${credentials.apiKey}`,
+          method: 'POST' as const,
+          headers: {
+            "customjs-origin": "n8n/scraper",
+          },
+          body: {
+            input: JSON.stringify(payload),
+            code:
+              `const { SCRAPER } = require('./utils'); ` +
+              `const payload = input; ` +
+              `return SCRAPER(payload.url, payload.commands || [], "${returnValueType === "binary" ? "image" : "html"}", ${debug ? "true" : "false"});`,
+            returnBinary: returnValueType === "binary" ? "true" : "false",
+          },
+          encoding: returnValueType === "binary" ? null : undefined,
+          json: true,
+        };
 
-      const response = await this.helpers.requestWithAuthentication.call(this, 'customJsApi', options);
+        const response = await this.helpers.requestWithAuthentication.call(this, 'customJsApi', options);
 
-      if (returnValueType === "binary") {
-        if (!response || (Buffer.isBuffer(response) && response.length === 0)) {
-          // No binary data returned; emit only JSON without a binary property
+        if (returnValueType === "binary") {
+          if (!response || (Buffer.isBuffer(response) && response.length === 0)) {
+            // No binary data returned; emit only JSON without a binary property
+            returnData.push({
+              json: items[i].json,
+              pairedItem: {
+                item: i,
+              },
+            });
+            continue;
+          }
+          const binaryData = await this.helpers.prepareBinaryData(
+            response,
+            "output.png"
+          );
           returnData.push({
             json: items[i].json,
+            binary: {
+              data: binaryData,
+            },
+            pairedItem: {
+              item: i,
+            },
+          });
+        } else {
+          returnData.push({
+            json: {
+              output: response.toString(),
+            },
+            pairedItem: {
+              item: i,
+            },
+          });
+        }
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        if (this.continueOnFail()) {
+          returnData.push({
+            json: {
+              error: errorMessage,
+            },
             pairedItem: {
               item: i,
             },
           });
           continue;
         }
-        const binaryData = await this.helpers.prepareBinaryData(
-          response,
-          "output.png"
-        );
-        returnData.push({
-          json: items[i].json,
-          binary: {
-            data: binaryData,
-          },
-          pairedItem: {
-            item: i,
-          },
-        });
-      } else {
-        returnData.push({
-          json: {
-            output: response.toString(),
-          },
-          pairedItem: {
-            item: i,
-          },
-        });
+        throw new NodeOperationError(this.getNode(), error as Error, { itemIndex: i });
       }
     }
 
