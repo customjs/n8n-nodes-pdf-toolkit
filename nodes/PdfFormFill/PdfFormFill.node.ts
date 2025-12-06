@@ -79,6 +79,14 @@ export class PdfFormFill implements INodeType {
           },
         ],
       },
+      {
+        displayName: "Output Filename",
+        name: "outputFilename",
+        type: "string",
+        default: "document.pdf",
+        description: "Name for the generated PDF file (include .pdf extension)",
+        required: false,
+      },
     ],
   };
 
@@ -145,9 +153,10 @@ export class PdfFormFill implements INodeType {
           continue;
         }
 
+        const outputFilename = this.getNodeParameter("outputFilename", i, "document.pdf") as string;
         const binaryData = await this.helpers.prepareBinaryData(
           response,
-          "document.pdf"
+          outputFilename
         );
 
         returnData.push({
