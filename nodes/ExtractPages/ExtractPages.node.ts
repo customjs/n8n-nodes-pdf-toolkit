@@ -59,6 +59,14 @@ export class ExtractPages implements INodeType {
         description:
           "The range of pages to extract. Default is first page. (ex: 1-3, or 4)",
       },
+      {
+        displayName: "Output Filename",
+        name: "outputFilename",
+        type: "string",
+        default: "output.pdf",
+        description: "Name for the generated PDF file (include .pdf extension)",
+        required: false,
+      },
     ],
   };
 
@@ -125,9 +133,10 @@ export class ExtractPages implements INodeType {
           continue;
         }
 
+        const outputFilename = this.getNodeParameter("outputFilename", i, "output.pdf") as string;
         const binaryData = await this.helpers.prepareBinaryData(
           response,
-          "output.pdf"
+          outputFilename
         );
 
         returnData.push({

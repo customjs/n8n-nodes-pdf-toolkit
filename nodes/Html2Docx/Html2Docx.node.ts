@@ -37,6 +37,14 @@ export class Html2Docx implements INodeType {
         description: "The HTML content to convert to Docx",
         required: true,
       },
+      {
+        displayName: "Output Filename",
+        name: "outputFilename",
+        type: "string",
+        default: "output.docx",
+        description: "Name for the generated DOCX file (include .docx extension)",
+        required: false,
+      },
     ],
   };
 
@@ -76,9 +84,10 @@ export class Html2Docx implements INodeType {
           continue;
         }
 
+        const outputFilename = this.getNodeParameter("outputFilename", i, "output.docx") as string;
         const binaryData = await this.helpers.prepareBinaryData(
           response,
-          "output.docx"
+          outputFilename
         );
 
         returnData.push({

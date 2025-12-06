@@ -114,6 +114,19 @@ export class Scraper implements INodeType {
         description: "Specify if the operation should be canceled when the element is not found.",
         required: true,
       },
+      {
+        displayName: "Output Filename",
+        name: "outputFilename",
+        type: "string",
+        default: "output.png",
+        description: "Name for the generated PNG file (include .png extension)",
+        required: false,
+        displayOptions: {
+          show: {
+            returnValueType: ["binary"],
+          },
+        },
+      },
     ],
   };
 
@@ -172,9 +185,10 @@ export class Scraper implements INodeType {
             });
             continue;
           }
+          const outputFilename = this.getNodeParameter("outputFilename", i, "output.png") as string;
           const binaryData = await this.helpers.prepareBinaryData(
             response,
-            "output.png"
+            outputFilename
           );
           returnData.push({
             json: items[i].json,

@@ -37,6 +37,14 @@ export class Html2Pdf implements INodeType {
         description: "The HTML content to convert to PDF",
         required: true,
       },
+      {
+        displayName: "Output Filename",
+        name: "outputFilename",
+        type: "string",
+        default: "output.pdf",
+        description: "Name for the generated PDF file (include .pdf extension)",
+        required: false,
+      },
     ],
   };
 
@@ -76,9 +84,10 @@ export class Html2Pdf implements INodeType {
           continue;
         }
 
+        const outputFilename = this.getNodeParameter("outputFilename", i, "output.pdf") as string;
         const binaryData = await this.helpers.prepareBinaryData(
           response,
-          "output.pdf"
+          outputFilename
         );
 
         returnData.push({

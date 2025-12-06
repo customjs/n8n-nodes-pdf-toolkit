@@ -53,6 +53,14 @@ export class MergePdfs implements INodeType {
           "The field names for binary PDF file or urls that indicate PDF files. Please make sure the size of PDf file doesn't exceed 6mb. If it's bigger, pass an array of URLs rather than binary file.",
         required: true,
       },
+      {
+        displayName: "Output Filename",
+        name: "outputFilename",
+        type: "string",
+        default: "output.pdf",
+        description: "Name for the generated PDF file (include .pdf extension)",
+        required: false,
+      },
     ],
   };
 
@@ -104,9 +112,10 @@ export class MergePdfs implements INodeType {
         return [returnData];
       }
 
+      const outputFilename = this.getNodeParameter("outputFilename", 0, "output.pdf") as string;
       const binaryData = await this.helpers.prepareBinaryData(
         response,
-        "output.pdf"
+        outputFilename
       );
 
       returnData.push({

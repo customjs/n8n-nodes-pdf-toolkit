@@ -51,6 +51,14 @@ export class PdfToPng implements INodeType {
           "The field name for binary PDF file or url that indicates PDF file. Please make sure the size of PDf file doesn't exceed 6mb. If it's bigger, pass URL rather than binary file.",
         required: true,
       },
+      {
+        displayName: "Output Filename",
+        name: "outputFilename",
+        type: "string",
+        default: "output.png",
+        description: "Name for the generated PNG file (include .png extension)",
+        required: false,
+      },
     ],
   };
 
@@ -114,9 +122,10 @@ export class PdfToPng implements INodeType {
           continue;
         }
 
+        const outputFilename = this.getNodeParameter("outputFilename", i, "output.png") as string;
         const binaryData = await this.helpers.prepareBinaryData(
           response,
-          "output.png"
+          outputFilename
         );
 
         returnData.push({
