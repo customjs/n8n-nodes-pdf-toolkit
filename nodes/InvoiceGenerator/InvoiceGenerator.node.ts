@@ -186,6 +186,14 @@ export class InvoiceGenerator implements INodeType {
 				},
 				description: 'A JSON array of invoice items. E.g., [{"description":"Item 1","quantity":2,"unitPrice":50}]',
 			},
+			{
+				displayName: 'Output Filename',
+				name: 'outputFilename',
+				type: 'string',
+				default: 'Invoice.pdf',
+				description: 'Name for the generated PDF file (include .pdf extension)',
+				required: false,
+			},
 		],
 	};
 
@@ -283,9 +291,10 @@ export class InvoiceGenerator implements INodeType {
 					continue;
 				}
 
+				const outputFilename = this.getNodeParameter('outputFilename', i, 'Invoice.pdf') as string;
 				const binaryData = await this.helpers.prepareBinaryData(
 					response,
-					"Invoice.pdf"
+					outputFilename
 				);
 				returnData.push({
 					json: items[i].json,

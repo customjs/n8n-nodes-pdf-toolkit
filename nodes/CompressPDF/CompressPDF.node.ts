@@ -51,6 +51,14 @@ export class CompressPDF implements INodeType {
           "The field name for binary PDF file or url that indicates PDF file. Please make sure the size of PDf file doesn't exceed 6mb. If it's bigger, pass URL rather than binary file.",
         required: true,
       },
+      {
+        displayName: "Output Filename",
+        name: "outputFilename",
+        type: "string",
+        default: "output.pdf",
+        description: "Name for the generated PDF file (include .pdf extension)",
+        required: false,
+      },
     ],
   };
 
@@ -114,9 +122,10 @@ export class CompressPDF implements INodeType {
           continue;
         }
 
+        const outputFilename = this.getNodeParameter("outputFilename", i, "output.pdf") as string;
         const binaryData = await this.helpers.prepareBinaryData(
           response,
-          "output.pdf"
+          outputFilename
         );
 
         returnData.push({
