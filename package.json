@@ -41,7 +41,8 @@
       "dist/nodes/Html2Docx/Html2Docx.node.js",
       "dist/nodes/GetFormFieldNames/GetFormFieldNames.node.js",
       "dist/nodes/PdfFormFill/PdfFormFill.node.js",
-      "dist/nodes/InvoiceGenerator/InvoiceGenerator.node.js"
+      "dist/nodes/InvoiceGenerator/InvoiceGenerator.node.js",
+      "dist/nodes/JsonToToon/JsonToToon.node.js"
     ]
   },
   "devDependencies": {
