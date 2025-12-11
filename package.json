@@ -42,7 +42,8 @@
       "dist/nodes/GetFormFieldNames/GetFormFieldNames.node.js",
       "dist/nodes/PdfFormFill/PdfFormFill.node.js",
       "dist/nodes/InvoiceGenerator/InvoiceGenerator.node.js",
-      "dist/nodes/JsonToToon/JsonToToon.node.js"
+      "dist/nodes/JsonToToon/JsonToToon.node.js",
+      "dist/nodes/ToonToJson/ToonToJson.node.js"
     ]
   },
   "devDependencies": {
