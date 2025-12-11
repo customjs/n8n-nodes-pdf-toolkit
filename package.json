@@ -44,7 +44,8 @@
       "dist/nodes/InvoiceGenerator/InvoiceGenerator.node.js",
       "dist/nodes/JsonToToon/JsonToToon.node.js",
       "dist/nodes/ToonToJson/ToonToJson.node.js",
-      "dist/nodes/AdvancedJsonSelector/AdvancedJsonSelector.node.js"
+      "dist/nodes/AdvancedJsonSelector/AdvancedJsonSelector.node.js",
+      "dist/nodes/AdvancedRegexTool/AdvancedRegexTool.node.js"
     ]
   },
   "devDependencies": {
