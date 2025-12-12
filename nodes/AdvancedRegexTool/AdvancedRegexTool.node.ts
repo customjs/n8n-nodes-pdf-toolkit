@@ -127,7 +127,7 @@ export class AdvancedRegexTool implements INodeType {
 
                 returnData.push({
                     json: {
-                        result: response,
+                        result: JSON.parse(response),
                     },
                     pairedItem: {
                         item: i,
