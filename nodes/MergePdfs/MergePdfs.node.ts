@@ -6,6 +6,7 @@ import {
   INodeTypeDescription,
   NodePropertyTypes,
   NodeOperationError,
+  NodeConnectionType,
 } from "n8n-workflow";
 
 export class MergePdfs implements INodeType {
@@ -19,8 +20,8 @@ export class MergePdfs implements INodeType {
     defaults: {
       name: "Merge PDF",
     },
-    inputs: ["main"],
-    outputs: ["main"],
+    inputs: [NodeConnectionType.Main],
+    outputs: [NodeConnectionType.Main],
     credentials: [
       {
         name: "customJsApi",
@@ -28,6 +29,20 @@ export class MergePdfs implements INodeType {
       },
     ],
     properties: [
+      {
+        displayName: 'Operation',
+        name: 'operation',
+        type: 'options',
+        noDataExpression: true,
+        options: [
+          {
+            name: 'Merge PDFs',
+            value: 'mergePdfs',
+            action: 'Merge PDFs',
+          },
+        ],
+        default: 'mergePdfs',
+      },
       {
         displayName: "Resource",
         name: "resource",
@@ -96,11 +111,11 @@ export class MergePdfs implements INodeType {
               return PDF_MERGE(input);`,
           returnBinary: "true",
         },
-        encoding: null,
+        encoding: 'arraybuffer' as const,
         json: true,
       };
 
-      const response = await this.helpers.requestWithAuthentication.call(this, 'customJsApi', options);
+      const response = await this.helpers.httpRequestWithAuthentication.call(this, 'customJsApi', options);
       if (!response || (Buffer.isBuffer(response) && response.length === 0)) {
         // No binary data returned; emit only JSON without a binary property
         returnData.push({
