@@ -7,9 +7,9 @@
       "typeVersion": 1,
       "position": [
         0,
-        360
+        464
       ],
-      "id": "5016ff34-417a-4495-92f9-cc37b79ec5a4",
+      "id": "c3fa76fc-81fd-45fe-bcb1-a4269a384fd4",
       "name": "Convert PDF into Text",
       "credentials": {
         "customJsApi": {
@@ -25,10 +25,10 @@
       "type": "CUSTOM.html2Pdf",
       "typeVersion": 1,
       "position": [
-        -340,
-        500
+        -336,
+        512
       ],
-      "id": "7a8e460a-7bca-440d-a6ca-621d65d5e319",
+      "id": "6546cac6-634e-46f0-a58a-593de0ad7ed3",
       "name": "HTML to PDF",
       "credentials": {
         "customJsApi": {
@@ -42,10 +42,10 @@
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        -1180,
-        840
+        -1184,
+        848
       ],
-      "id": "1e495a63-1e59-45c6-82ba-283c180da4db",
+      "id": "a2ab28c3-dd3a-4056-95c8-d9eab78fb781",
       "name": "When clicking ‘Test workflow’"
     },
     {
@@ -54,9 +54,9 @@
       "typeVersion": 1,
       "position": [
         0,
-        540
+        640
       ],
-      "id": "c501d285-3595-4392-a462-17d63077aac2",
+      "id": "b4809cb1-f900-4e86-883b-5b994f675f0a",
       "name": "Convert PDF into PNG",
       "credentials": {
         "customJsApi": {
@@ -71,9 +71,9 @@
       "typeVersion": 1,
       "position": [
         0,
-        700
+        800
       ],
-      "id": "2860083d-adb8-4d09-98f6-739fb8dfcfae",
+      "id": "55deab45-08a7-4b23-9ed9-0f537ffb5384",
       "name": "Extract Pages From PDF",
       "credentials": {
         "customJsApi": {
@@ -88,9 +88,9 @@
       "typeVersion": 1,
       "position": [
         0,
-        200
+        272
       ],
-      "id": "a4e509aa-6ed7-40ea-b7e0-a3c5fa306e9e",
+      "id": "a235cc23-e6ff-43ad-bdd8-0f3464a1274f",
       "name": "Compress PDF file",
       "credentials": {
         "customJsApi": {
@@ -108,9 +108,9 @@
       "typeVersion": 1,
       "position": [
         0,
-        1300
+        1312
       ],
-      "id": "fdf55298-d1d8-4080-a50b-871cff055dfd",
+      "id": "a7548403-a8b3-4e93-8f22-81c39cb795bb",
       "name": "Convert PDF into Text1",
       "credentials": {
         "customJsApi": {
@@ -128,9 +128,9 @@
       "typeVersion": 1,
       "position": [
         0,
-        1480
+        1488
       ],
-      "id": "c2e24235-7c10-42b5-9554-edefed812537",
+      "id": "39806c0a-a369-4fc5-a42b-7fdae0fdc2e3",
       "name": "Convert PDF into PNG1",
       "credentials": {
         "customJsApi": {
@@ -148,9 +148,9 @@
       "typeVersion": 1,
       "position": [
         0,
-        1640
+        1648
       ],
-      "id": "2a0618c0-568d-4ba5-b86d-b3a4f67171b6",
+      "id": "e8be975e-2d3f-4c22-a51f-3fe6937c6ed1",
       "name": "Extract Pages From PDF1",
       "credentials": {
         "customJsApi": {
@@ -168,9 +168,9 @@
       "typeVersion": 1,
       "position": [
         0,
-        1140
+        1152
       ],
-      "id": "7e01f8eb-3c25-42cc-8b35-1e53bc65fb56",
+      "id": "70a2c152-de80-4f19-9235-e7e6db7c1e34",
       "name": "Compress PDF file1",
       "credentials": {
         "customJsApi": {
@@ -186,10 +186,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -540,
+        -544,
         1520
       ],
-      "id": "ff9fe867-068c-488d-9564-a00646f86e03",
+      "id": "0f5b4fb2-0737-4293-8859-19db093d1663",
       "name": "Code"
     },
     {
@@ -202,7 +202,7 @@
         0,
         0
       ],
-      "id": "70c9ec6c-0f03-4d75-938d-a97ad6d72c45",
+      "id": "d0f8932f-42c4-4069-8daa-bc33707c6f66",
       "name": "Take a screenshot of a website",
       "credentials": {
         "customJsApi": {
@@ -217,9 +217,9 @@
       "typeVersion": 1,
       "position": [
         640,
-        440
+        544
       ],
-      "id": "89c2f31a-d872-4b0a-bf61-6f8d38396491",
+      "id": "69a138a6-5c57-428a-935a-bb470f12ca77",
       "name": "Merge PDF",
       "credentials": {
         "customJsApi": {
@@ -234,9 +234,9 @@
       "typeVersion": 3.1,
       "position": [
         400,
-        440
+        544
       ],
-      "id": "f377a28c-94f1-43bc-b327-a109825c5b3b",
+      "id": "540ab015-c01a-41dd-af75-c91cadb95b25",
       "name": "Merge"
     },
     {
@@ -246,10 +246,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -520,
-        1940
+        -528,
+        1952
       ],
-      "id": "2ff09608-2645-46a7-bd4a-8ddce3b9ce78",
+      "id": "25e8243d-2384-4be4-b08a-89a4a3b6c77c",
       "name": "Code1"
     },
     {
@@ -261,10 +261,88 @@
       "typeVersion": 1,
       "position": [
         0,
-        1940
+        1952
       ],
-      "id": "a1d91ceb-e612-4ac7-a0e7-6e62e934acb3",
+      "id": "bbe5baf9-c18d-45e3-98cd-6dd3b6cf9227",
       "name": "Merge PDF1",
+      "credentials": {
+        "customJsApi": {
+          "id": "BFGbk0a71fKWY967",
+          "name": "CustomJS account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "json": "{\"store\": {\"name\": \"Test Store\"}}",
+        "path": "$.store.name"
+      },
+      "type": "CUSTOM.advancedJsonSelector",
+      "typeVersion": 1,
+      "position": [
+        0,
+        -176
+      ],
+      "id": "15448277-beb1-4862-83aa-b4f5512bd598",
+      "name": "Advanced JSON Selector",
+      "credentials": {
+        "customJsApi": {
+          "id": "BFGbk0a71fKWY967",
+          "name": "CustomJS account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "textData": "Hello world",
+        "regexPattern": "world"
+      },
+      "type": "CUSTOM.advancedRegexTool",
+      "typeVersion": 1,
+      "position": [
+        0,
+        -352
+      ],
+      "id": "47eddb45-b1cf-48ed-bea4-d65e6095ba08",
+      "name": "Advanced RegEx Tool",
+      "credentials": {
+        "customJsApi": {
+          "id": "BFGbk0a71fKWY967",
+          "name": "CustomJS account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonData": "{\"test\": \"data\"}"
+      },
+      "type": "CUSTOM.jsonToToon",
+      "typeVersion": 1,
+      "position": [
+        0,
+        -512
+      ],
+      "id": "649a2e44-efd1-4c50-a675-31b8b364027f",
+      "name": "JSON to TOON",
+      "credentials": {
+        "customJsApi": {
+          "id": "BFGbk0a71fKWY967",
+          "name": "CustomJS account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toonData": "T: test data"
+      },
+      "type": "CUSTOM.toonToJson",
+      "typeVersion": 1,
+      "position": [
+        0,
+        -672
+      ],
+      "id": "7588c4f6-8f7f-4766-97b1-3a6535b86bf4",
+      "name": "TOON to JSON",
       "credentials": {
         "customJsApi": {
           "id": "BFGbk0a71fKWY967",
@@ -321,6 +399,26 @@
           },
           {
             "node": "Code1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Advanced JSON Selector",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Advanced RegEx Tool",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "JSON to TOON",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "TOON to JSON",
             "type": "main",
             "index": 0
           }
@@ -402,11 +500,10 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "cdc6a786-2d98-44e0-94e1-3ad648639efc",
+  "versionId": "015fa432-6d68-4267-bdd3-78a3b81fe1e7",
   "meta": {
-    "templateCredsSetupCompleted": true,
-    "instanceId": "b503899dfd9ae32bbf8e1f446a1f2c9b3c59f80c79b274c49b1606b7ae9579e1"
+    "instanceId": "2234a18b00e1cffb78a3a5dac42b11142dff7d7366d0d9174545499f2d4b695d"
   },
-  "id": "FJXNzRU41N6RchQo",
+  "id": "7bx7OktEc4mWjzyS",
   "tags": []
 }
