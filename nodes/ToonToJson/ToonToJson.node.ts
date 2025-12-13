@@ -4,6 +4,7 @@ import {
     INodeType,
     INodeTypeDescription,
     NodeOperationError,
+    NodeConnectionType,
 } from "n8n-workflow";
 
 export class ToonToJson implements INodeType {
@@ -17,8 +18,8 @@ export class ToonToJson implements INodeType {
         defaults: {
             name: "TOON to JSON",
         },
-        inputs: ["main"],
-        outputs: ["main"],
+        inputs: [NodeConnectionType.Main],
+        outputs: [NodeConnectionType.Main],
         credentials: [
             {
                 name: "customJsApi",
@@ -26,6 +27,20 @@ export class ToonToJson implements INodeType {
             },
         ],
         properties: [
+            {
+                displayName: 'Operation',
+                name: 'operation',
+                type: 'options',
+                noDataExpression: true,
+                options: [
+                    {
+                        name: 'Convert to JSON',
+                        value: 'convertToJson',
+                        action: 'Convert to JSON',
+                    },
+                ],
+                default: 'convertToJson',
+            },
             {
                 displayName: "TOON Data",
                 name: "toonData",
@@ -65,7 +80,7 @@ export class ToonToJson implements INodeType {
                     json: true,
                 };
 
-                const response = await this.helpers.requestWithAuthentication.call(this, 'customJsApi', options);
+                const response = await this.helpers.httpRequestWithAuthentication.call(this, 'customJsApi', options);
 
                 returnData.push({
                     json: {

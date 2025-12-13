@@ -4,6 +4,7 @@ import {
     INodeType,
     INodeTypeDescription,
     NodeOperationError,
+    NodeConnectionType,
 } from "n8n-workflow";
 
 export class AdvancedJsonSelector implements INodeType {
@@ -17,8 +18,8 @@ export class AdvancedJsonSelector implements INodeType {
         defaults: {
             name: "Advanced JSON Selector",
         },
-        inputs: ["main"],
-        outputs: ["main"],
+        inputs: [NodeConnectionType.Main],
+        outputs: [NodeConnectionType.Main],
         credentials: [
             {
                 name: "customJsApi",
@@ -26,6 +27,20 @@ export class AdvancedJsonSelector implements INodeType {
             },
         ],
         properties: [
+            {
+                displayName: 'Operation',
+                name: 'operation',
+                type: 'options',
+                noDataExpression: true,
+                options: [
+                    {
+                        name: 'Select JSON',
+                        value: 'selectJson',
+                        action: 'Select JSON',
+                    },
+                ],
+                default: 'selectJson',
+            },
             {
                 displayName: "JSON",
                 name: "json",
@@ -69,13 +84,14 @@ export class AdvancedJsonSelector implements INodeType {
                         code: "const { JSONPath } = require('jsonpath-plus'); return JSONPath({ path: input.path, json: JSON.parse(input.json) });",
                         returnBinary: "false",
                     },
+                    json: true,
                 };
 
-                const response = await this.helpers.requestWithAuthentication.call(this, 'customJsApi', options);
+                const response = await this.helpers.httpRequestWithAuthentication.call(this, 'customJsApi', options);
 
                 returnData.push({
                     json: {
-                        result: JSON.parse(response),
+                        result: response,
                     },
                     pairedItem: {
                         item: i,
