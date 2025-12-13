@@ -45,12 +45,12 @@
     ]
   },
   "devDependencies": {
-    "typescript": "~4.8.4",
+    "@types/node": "^16.11.7",
     "gulp": "^4.0.2",
-    "@types/node": "^16.11.7"
+    "typescript": "~4.8.4"
   },
   "peerDependencies": {
-    "n8n-workflow": "*"
+    "n8n-workflow": "^1.64.0"
   },
   "type": "commonjs",
   "main": "index.js",

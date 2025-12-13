@@ -4,6 +4,7 @@ import {
   INodeType,
   INodeTypeDescription,
   NodeOperationError,
+  NodeConnectionType,
 } from "n8n-workflow";
 
 export class Html2Docx implements INodeType {
@@ -17,8 +18,8 @@ export class Html2Docx implements INodeType {
     defaults: {
       name: "HTML to Docx",
     },
-    inputs: ["main"],
-    outputs: ["main"],
+    inputs: [NodeConnectionType.Main],
+    outputs: [NodeConnectionType.Main],
     credentials: [
       {
         name: "customJsApi",
@@ -26,6 +27,20 @@ export class Html2Docx implements INodeType {
       },
     ],
     properties: [
+      {
+        displayName: 'Operation',
+        name: 'operation',
+        type: 'options',
+        noDataExpression: true,
+        options: [
+          {
+            name: 'Convert HTML to DOCX',
+            value: 'html2Docx',
+            action: 'Convert HTML to DOCX',
+          },
+        ],
+        default: 'html2Docx',
+      },
       {
         displayName: "HTML Input",
         name: "htmlInput",
@@ -68,11 +83,11 @@ export class Html2Docx implements INodeType {
             code: "const { HTML2DOCX } = require('./utils'); return HTML2DOCX(input)",
             returnBinary: "true",
           },
-          encoding: null,
+          encoding: 'arraybuffer' as const,
           json: true,
         };
 
-        const response = await this.helpers.requestWithAuthentication.call(this, 'customJsApi', options);
+        const response = await this.helpers.httpRequestWithAuthentication.call(this, 'customJsApi', options);
         if (!response || (Buffer.isBuffer(response) && response.length === 0)) {
           // No binary data returned; emit only JSON without a binary property
           returnData.push({

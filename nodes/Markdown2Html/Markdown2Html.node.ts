@@ -4,6 +4,7 @@ import {
   INodeType,
   INodeTypeDescription,
   NodeOperationError,
+  NodeConnectionType,
 } from "n8n-workflow";
 
 export class Markdown2Html implements INodeType {
@@ -17,8 +18,8 @@ export class Markdown2Html implements INodeType {
     defaults: {
       name: "Markdown to HTML",
     },
-    inputs: ["main"],
-    outputs: ["main"],
+    inputs: [NodeConnectionType.Main],
+    outputs: [NodeConnectionType.Main],
     credentials: [
       {
         name: "customJsApi",
@@ -26,6 +27,20 @@ export class Markdown2Html implements INodeType {
       },
     ],
     properties: [
+      {
+        displayName: 'Operation',
+        name: 'operation',
+        type: 'options',
+        noDataExpression: true,
+        options: [
+          {
+            name: 'Convert Markdown to HTML',
+            value: 'markdown2Html',
+            action: 'Convert Markdown to HTML',
+          },
+        ],
+        default: 'markdown2Html',
+      },
       {
         displayName: "Markdown Input",
         name: "markdownInput",
@@ -63,7 +78,7 @@ export class Markdown2Html implements INodeType {
           json: true,
         };
 
-        const response = await this.helpers.requestWithAuthentication.call(this, 'customJsApi', options);
+        const response = await this.helpers.httpRequestWithAuthentication.call(this, 'customJsApi', options);
 
         returnData.push({
           json: {

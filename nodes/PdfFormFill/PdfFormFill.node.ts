@@ -4,6 +4,7 @@ import {
   INodeType,
   INodeTypeDescription,
   NodeOperationError,
+  NodeConnectionType,
 } from "n8n-workflow";
 
 export class PdfFormFill implements INodeType {
@@ -17,8 +18,8 @@ export class PdfFormFill implements INodeType {
     defaults: {
       name: "PDF Form Fill (Fill PDF Fields)",
     },
-    inputs: ["main"],
-    outputs: ["main"],
+    inputs: [NodeConnectionType.Main],
+    outputs: [NodeConnectionType.Main],
     credentials: [
       {
         name: "customJsApi",
@@ -26,6 +27,20 @@ export class PdfFormFill implements INodeType {
       },
     ],
     properties: [
+      {
+        displayName: 'Operation',
+        name: 'operation',
+        type: 'options',
+        noDataExpression: true,
+        options: [
+          {
+            name: 'Fill PDF Form',
+            value: 'pdfFormFill',
+            action: 'Fill PDF Form',
+          },
+        ],
+        default: 'pdfFormFill',
+      },
       {
         displayName: "Resource",
         name: "resource",
@@ -137,11 +152,11 @@ export class PdfFormFill implements INodeType {
               return PDF_FILL_FORM(pdfInput, fieldValues);`,
             returnBinary: "true",
           },
-          encoding: null,
+          encoding: 'arraybuffer' as const,
           json: true,
         };
 
-        const response = await this.helpers.requestWithAuthentication.call(this, 'customJsApi', options);
+        const response = await this.helpers.httpRequestWithAuthentication.call(this, 'customJsApi', options);
         if (!response || (Buffer.isBuffer(response) && response.length === 0)) {
           // No binary data returned; emit only JSON without a binary property
           returnData.push({
