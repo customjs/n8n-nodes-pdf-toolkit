@@ -1,0 +1,19 @@
+import { IExecuteFunctions, INodeExecutionData } from 'n8n-workflow';
+import { ApiHelper } from '../ApiHelper';
+
+export async function executeToonToJson(
+    executeFunctions: IExecuteFunctions,
+    itemIndex: number
+): Promise<INodeExecutionData> {
+    const apiHelper = new ApiHelper(executeFunctions);
+    const item = executeFunctions.getInputData()[itemIndex];
+    const toon = executeFunctions.getNodeParameter('toon', itemIndex) as string;
+    const body = {
+        input: toon,
+        code: "const toon = require('./utils/toon-cjs'); return await toon.decode(input);",
+        returnBinary: 'false',
+    };
+
+    const response = await apiHelper.makeRequest('make/toonToJson', body, false, itemIndex);
+    return { json: response, pairedItem: { item: itemIndex } };
+}
