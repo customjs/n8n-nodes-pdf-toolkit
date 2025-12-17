@@ -3,9 +3,9 @@ import { ApiHelper } from '../ApiHelper';
 
 export async function executeGenerateInvoice(
     executeFunctions: IExecuteFunctions,
+    apiHelper: ApiHelper,
     itemIndex: number
 ): Promise<INodeExecutionData> {
-    const apiHelper = new ApiHelper(executeFunctions);
     const item = executeFunctions.getInputData()[itemIndex];
     const issuer = executeFunctions.getNodeParameter('issuer.issuerValues', itemIndex) as IDataObject;
     const recipient = executeFunctions.getNodeParameter('recipient.recipientValues', itemIndex) as IDataObject;

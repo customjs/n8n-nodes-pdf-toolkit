@@ -7,6 +7,7 @@ import {
     NodeConnectionType,
 } from 'n8n-workflow';
 
+import { ApiHelper } from './modules/ApiHelper';
 import { executeConvert } from './modules/Convert';
 import { executePDF } from './modules/PDF';
 import { executeWeb } from './modules/Web';
@@ -697,18 +698,19 @@ export class PdfToolkit implements INodeType {
         const returnData: INodeExecutionData[] = [];
         const resource = this.getNodeParameter('resource', 0) as string;
         const operation = this.getNodeParameter('operation', 0) as string;
+        const apiHelper = new ApiHelper(this);
 
         for (let i = 0; i < items.length; i++) {
             try {
                 let result: INodeExecutionData;
                 if (resource === 'convert') {
-                    result = await executeConvert(this, i, operation);
+                    result = await executeConvert(this, apiHelper, i, operation);
                 } else if (resource === 'pdf') {
-                    result = await executePDF(this, i, operation);
+                    result = await executePDF(this, apiHelper, i, operation);
                 } else if (resource === 'web') {
-                    result = await executeWeb(this, i, operation);
+                    result = await executeWeb(this, apiHelper, i, operation);
                 } else if (resource === 'data') {
-                    result = await executeData(this, i, operation);
+                    result = await executeData(this, apiHelper, i, operation);
                 } else {
                     throw new Error(`Unknown resource: ${resource}`);
                 }

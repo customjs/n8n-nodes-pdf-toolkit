@@ -3,9 +3,9 @@ import { ApiHelper } from '../ApiHelper';
 
 export async function executeSslCheck(
     executeFunctions: IExecuteFunctions,
+    apiHelper: ApiHelper,
     itemIndex: number
 ): Promise<INodeExecutionData> {
-    const apiHelper = new ApiHelper(executeFunctions);
     const item = executeFunctions.getInputData()[itemIndex];
     const domain = executeFunctions.getNodeParameter('domain', itemIndex) as string;
     const body = {

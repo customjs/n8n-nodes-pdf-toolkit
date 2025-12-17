@@ -1,4 +1,5 @@
 import { IExecuteFunctions, INodeExecutionData } from 'n8n-workflow';
+import { ApiHelper } from '../ApiHelper';
 import { executeCompress } from './Compress';
 import { executeMerge } from './Merge';
 import { executeExtractPages } from './ExtractPages';
@@ -8,22 +9,23 @@ import { executeGenerateInvoice } from './GenerateInvoice';
 
 export async function executePDF(
     executeFunctions: IExecuteFunctions,
+    apiHelper: ApiHelper,
     itemIndex: number,
     operation: string
 ): Promise<INodeExecutionData> {
     switch (operation) {
         case 'compress':
-            return executeCompress(executeFunctions, itemIndex);
+            return executeCompress(executeFunctions, apiHelper, itemIndex);
         case 'merge':
-            return executeMerge(executeFunctions, itemIndex);
+            return executeMerge(executeFunctions, apiHelper, itemIndex);
         case 'extractPages':
-            return executeExtractPages(executeFunctions, itemIndex);
+            return executeExtractPages(executeFunctions, apiHelper, itemIndex);
         case 'getFormFields':
-            return executeGetFormFields(executeFunctions, itemIndex);
+            return executeGetFormFields(executeFunctions, apiHelper, itemIndex);
         case 'fillForm':
-            return executeFillForm(executeFunctions, itemIndex);
+            return executeFillForm(executeFunctions, apiHelper, itemIndex);
         case 'generateInvoice':
-            return executeGenerateInvoice(executeFunctions, itemIndex);
+            return executeGenerateInvoice(executeFunctions, apiHelper, itemIndex);
         default:
             throw new Error(`Unknown operation: ${operation}`);
     }

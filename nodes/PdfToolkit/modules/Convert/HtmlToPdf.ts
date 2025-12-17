@@ -3,9 +3,9 @@ import { ApiHelper } from '../ApiHelper';
 
 export async function executeHtmlToPdf(
     executeFunctions: IExecuteFunctions,
+    apiHelper: ApiHelper,
     itemIndex: number
 ): Promise<INodeExecutionData> {
-    const apiHelper = new ApiHelper(executeFunctions);
     const item = executeFunctions.getInputData()[itemIndex];
     const html = executeFunctions.getNodeParameter('html', itemIndex) as string;
     const body: any = {

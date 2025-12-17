@@ -3,9 +3,9 @@ import { ApiHelper } from '../ApiHelper';
 
 export async function executeJsonToToon(
     executeFunctions: IExecuteFunctions,
+    apiHelper: ApiHelper,
     itemIndex: number
 ): Promise<INodeExecutionData> {
-    const apiHelper = new ApiHelper(executeFunctions);
     const item = executeFunctions.getInputData()[itemIndex];
     const json = executeFunctions.getNodeParameter('json', itemIndex);
     const body = {

@@ -3,9 +3,9 @@ import { ApiHelper } from '../ApiHelper';
 
 export async function executeRegex(
     executeFunctions: IExecuteFunctions,
+    apiHelper: ApiHelper,
     itemIndex: number
 ): Promise<INodeExecutionData> {
-    const apiHelper = new ApiHelper(executeFunctions);
     const item = executeFunctions.getInputData()[itemIndex];
     const textData = executeFunctions.getNodeParameter('textData', itemIndex) as string;
     const regexPattern = executeFunctions.getNodeParameter('regexPattern', itemIndex) as string;

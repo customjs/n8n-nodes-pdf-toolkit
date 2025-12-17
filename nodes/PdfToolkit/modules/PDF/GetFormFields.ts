@@ -3,9 +3,9 @@ import { ApiHelper } from '../ApiHelper';
 
 export async function executeGetFormFields(
     executeFunctions: IExecuteFunctions,
+    apiHelper: ApiHelper,
     itemIndex: number
 ): Promise<INodeExecutionData> {
-    const apiHelper = new ApiHelper(executeFunctions);
     const item = executeFunctions.getInputData()[itemIndex];
     const binaryPropertyName = executeFunctions.getNodeParameter('binaryPropertyName', itemIndex) as string;
     const binaryData = item.binary?.[binaryPropertyName];
