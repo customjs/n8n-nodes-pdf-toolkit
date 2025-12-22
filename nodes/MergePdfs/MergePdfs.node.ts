@@ -89,11 +89,15 @@ export class MergePdfs implements INodeType {
         (this.getNodeParameter("resource", 0) as string) === "binary";
       const field_name = this.getNodeParameter("field_name", 0) as string[] | string;
 
-      const files = isBinary ? items.map((item, i) => {
-        if (item.binary?.data) {
-          return Buffer.from(item.binary.data.data, "base64");
-        }
-      }) : [];
+      let files: (Buffer | undefined)[] = [];
+      if (isBinary) {
+        files = await Promise.all(items.map(async (item, i) => {
+          if (item.binary?.data) {
+            return await this.helpers.getBinaryDataBuffer(i, 'data');
+          }
+          return undefined;
+        }));
+      }
 
       const urls = !isBinary ? field_name : [];
 

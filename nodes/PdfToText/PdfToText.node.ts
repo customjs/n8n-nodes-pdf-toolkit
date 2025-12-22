@@ -73,14 +73,13 @@ export class PdfToText implements INodeType {
     const items = this.getInputData();
     const returnData: INodeExecutionData[] = [];
 
-    const getFile = (field_name: string, i: number) => {
-      const file = items[i].binary?.[field_name];
-      if (!file) {
+    const getFile = async (field_name: string, i: number) => {
+      if (!items[i].binary?.[field_name]) {
         throw new Error(
           `No binary data found in field "${field_name}" for item ${i}`
         );
       }
-      return Buffer.from(file.data, "base64");
+      return await this.helpers.getBinaryDataBuffer(i, field_name);
     };
 
     for (let i = 0; i < items.length; i++) {
@@ -89,7 +88,8 @@ export class PdfToText implements INodeType {
         const field_name = this.getNodeParameter("field_name", i) as string;
         const isBinary =
           (this.getNodeParameter("resource", i) as string) === "binary";
-        const file = isBinary ? getFile(field_name, i) : "";
+
+        const file = isBinary ? await getFile(field_name, i) : "";
 
         if (
           !isBinary &&
