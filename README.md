@@ -2,7 +2,7 @@
 
 # @custom-js/n8n-nodes-pdf-toolkit
 
-> [!CAUTION]
+> ⚠️
 > **DEPRECATED**: This package is deprecated and will no longer receive updates.
 > Please use the new and improved [**@custom-js/n8n-nodes-pdf-toolkit-v2**](https://www.npmjs.com/package/@custom-js/n8n-nodes-pdf-toolkit-v2) which consolidates all functionality into a single, more efficient node.
 
