@@ -2,6 +2,10 @@
 
 # @custom-js/n8n-nodes-pdf-toolkit
 
+> [!CAUTION]
+> **DEPRECATED**: This package is deprecated and will no longer receive updates.
+> Please use the new and improved [**@custom-js/n8n-nodes-pdf-toolkit-v2**](https://www.npmjs.com/package/@custom-js/n8n-nodes-pdf-toolkit-v2) which consolidates all functionality into a single, more efficient node.
+
 This is an n8n community node. It lets interact with official API of [customJS API](https://www.customjs.space/)
 
 This package contains nodes to help you generate PDF from HTML, merge multiple PDF files, take a screenshot of specific website using URL, convert PDF to PNG, convert PDF to Text and extract pages from PDF.
